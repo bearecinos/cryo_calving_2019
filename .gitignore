@@ -1,18 +1,23 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+*.py[cod]
+__pycache__
 
-# Other files and folders
-.settings/
+# PyCharm stuffs
+.idea/
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+# coverage stuffs
+.coverage
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# Notebook stuffs
+*/*checkpoints
+.ipynb_checkpoints
+
+# Packages
+*.egg
+*.egg-info
+eggs
+
+# specific
+.nbgrader.log
+*.cache
+*.lock
+*.html
