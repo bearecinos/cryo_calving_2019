@@ -140,3 +140,5 @@ for gdir in gdirs:
         forwrite.append(cal_dic)
         # We write out everything
         gdir.write_pickle(forwrite, 'calving_output')
+
+utils.compile_glacier_statistics(gdirs, filesuffix='_Columbia_with_calving_with_sliding_')

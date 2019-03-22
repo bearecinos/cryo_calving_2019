@@ -13,9 +13,9 @@ from matplotlib import rcParams
 rcParams['axes.labelsize'] = 20
 rcParams['xtick.labelsize'] = 20
 rcParams['ytick.labelsize'] = 20
-rcParams['legend.fontsize'] = 18
+rcParams['legend.fontsize'] = 12
 # Set figure width and height in cm
-width_cm = 10
+width_cm = 12
 height_cm = 6
 
 
@@ -101,7 +101,7 @@ for gdir, gdir_c in zip(gdirs_one,gdirs_two):
     if vel_c[-1] > 0.0:
         #print(vel_c)
         plt.plot(x_c, vel_c-vel, '-', label=gdir.rgi_id, linewidth=2.5)
-        plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
+        plt.legend(loc='upper left')#, bbox_to_anchor=(1.0, 0.5))
         plt.xlabel('Normalised distance along the main flowline')
         plt.ylabel('Velocity difference [$km.yr^{-1}$]')
 

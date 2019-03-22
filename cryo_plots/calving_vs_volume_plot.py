@@ -9,6 +9,7 @@ from collections import OrderedDict
 import seaborn as sns
 from mpl_toolkits.axes_grid1 import ImageGrid
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from matplotlib.offsetbox import AnchoredText
 
 # Plot settings
 rcParams['axes.labelsize'] = 20
@@ -44,8 +45,9 @@ percent = []
 my_labels = {"x1": "volume > 500 km³", "x2": "500 km³ > volume > 100 km³",
              "x3": "100 km³ > volume > 10 km³", "x4": "10 km³ > volume > 0 km³"}
 
-plt.subplot(211)
+ax1 = plt.subplot(211)
 sns.set_style("white")
+ax1.tick_params(axis='both', bottom=True, left=True, width=2, direction='out', length=5)
 for j, f in enumerate(filenames):
     glacier = pd.read_csv(f)
     calving = glacier['calving_flux']
@@ -83,7 +85,10 @@ for j, f in enumerate(filenames):
         pass
     #plt.xlabel('Calving flux $km^{3}$$yr^{-1}$', size=20)
     plt.ylabel('Normalised glacier volume', size=20)
-    plt.text(-0.2, 1.58, 'a', **letkm)
+    at = AnchoredText('a', prop=dict(size=20), frameon=True, loc=2)
+    ax1.add_artist(at)
+
+    #plt.text(-0.2, 1.58, 'a', **letkm)
     plt.margins(0.05)
 
 handles, labels = plt.gca().get_legend_handles_labels()
@@ -92,7 +97,8 @@ plt.legend(by_label.values(), by_label.keys(), loc='upper right')
 #letkm = dict(color='black', ha='left', va='top', fontsize=19,
 #             bbox=dict(facecolor='white', edgecolor='white'))
 
-plt.subplot(212)
+ax2 = plt.subplot(212)
+ax2.tick_params(axis='both', bottom=True, left=True, width=2, direction='out', length=5)
 sns.set_style("white")
 for j, f in enumerate(filenames):
     glacier = pd.read_csv(f)
@@ -115,7 +121,9 @@ for j, f in enumerate(filenames):
         pass
     plt.xlabel('Frontal ablation [$km^{3}$$yr^{-1}$]', size=20)
     plt.ylabel('Temperature sensitivity \n $\mu^{*}$ [mm $yr^{-1}K^{-1}$]', size=20)
-    plt.text(-0.2, 153, 'b', **letkm)
+    at = AnchoredText('b', prop=dict(size=20), frameon=True, loc=2)
+    ax2.add_artist(at)
+    #plt.text(-0.2, 153, 'b', **letkm)
     plt.margins(0.05)
 
 

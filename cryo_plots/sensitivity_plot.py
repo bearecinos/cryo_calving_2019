@@ -203,9 +203,9 @@ fig1 = plt.figure(1, figsize=(width_cm, height_cm*3))
 gs = gridspec.GridSpec(3, 1, hspace=0.2)
 
 #sns.set_color_codes("colorblind")
-plt.subplot(gs[0])
+ax1 = plt.subplot(gs[0])
 sns.set_style("white")
-
+ax1.tick_params(axis='both', bottom=True, left=True, width=2, direction='out', length=5)
 plt.plot(k, data_frame1, "o", color=sns.xkcd_rgb["ocean blue"],
              linewidth=2.5, markersize=10,
              label=my_labels_k["x1"])
@@ -236,7 +236,8 @@ plt.text(0.135, 25.4, 'a', **letkm)
 plt.margins(0.05)
 
 
-plt.subplot(gs[1])
+ax2 = plt.subplot(gs[1])
+ax2.tick_params(axis='both', bottom=True, left=True, width=2, direction='out', length=5)
 sns.set_color_codes("colorblind")
 sns.set_style("white")
 
@@ -282,7 +283,8 @@ plt.text(1.29e-24, 23.6, 'b', **letkm)
 plt.margins(0.05)
 
 
-plt.subplot(gs[2])
+ax3 = plt.subplot(gs[2])
+ax3.tick_params(axis='both', bottom=True, left=True, width=2, direction='out', length=5)
 sns.set_color_codes("colorblind")
 sns.set_style("white")
 

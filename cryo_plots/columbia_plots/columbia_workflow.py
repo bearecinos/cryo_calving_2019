@@ -21,6 +21,8 @@ import matplotlib.pyplot as plt
 
 
 cfg.initialize()
+
+
 MAIN_PATH = os.path.expanduser('~/cryo_calving_2019/')
 
 WORKING_DIR = os.path.join(MAIN_PATH,
@@ -129,6 +131,9 @@ Plot_fig_1 = True
 
 if Plot_fig_1:
 
+    rcParams['axes.labelsize'] = 20
+    rcParams['xtick.labelsize'] = 20
+    rcParams['ytick.labelsize'] = 20
     f = plt.figure(figsize=(14, 12))
     from mpl_toolkits.axes_grid1 import ImageGrid
 
@@ -165,7 +170,7 @@ if Plot_fig_1:
 
 
 # figure 2  ---------------
-Plot_fig_2 = True
+Plot_fig_2 = False
 
 if Plot_fig_2:
 
@@ -208,7 +213,7 @@ if Plot_fig_2:
                              dpi=150, bbox_inches='tight')
 
 # figure 3 -------------
-Plot_fig_3 = True
+Plot_fig_3 = False
 
 if Plot_fig_3:
 

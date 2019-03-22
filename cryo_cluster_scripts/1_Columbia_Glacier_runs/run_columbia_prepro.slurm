@@ -44,6 +44,7 @@ mkdir -p "$OUTDIR"
 
 # Copy any neccesary result data.
 cp -R "${WORKDIR}/per_glacier"* "${OUTDIR}/"
+cp -R "${WORKDIR}/"*.csv "${OUTDIR}/"
 
 # Print a final message so you can actually see it being done in the output log.
 echo "SLURM DONE"

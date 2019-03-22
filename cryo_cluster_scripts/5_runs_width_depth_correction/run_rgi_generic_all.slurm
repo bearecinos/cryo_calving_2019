@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#SBATCH --job-name=calving_vs_volume
+#SBATCH --job-name=width_depth_correction
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=14
 #SBATCH --time=24:00:00
@@ -11,6 +11,7 @@
 set -e
 
 # Load the required environment modules for OGGM
+# module purge
 module load python/3.6 oggm-binary-deps/3
 
 # Activate our local OGGM virtualenv
@@ -31,21 +32,20 @@ export OGGM_DOWNLOAD_CACHE=/home/data/download
 export OGGM_DOWNLOAD_CACHE_RO=1
 export OGGM_EXTRACT_DIR="/work/$SLURM_JOB_USER/$SLURM_JOB_ID/oggm_tmp"
 
-# Run the actual job. The srun invocation starts it as individual step for slurm.
-srun -n 1 -c "${SLURM_JOB_CPUS_PER_NODE}" python3 ./run_calving_vs_vol_exp.py
+# Run the actual job.
+python3 "$@"
 
 echo "Start copying..."
 
 # Once a slurm job is done, slurm will clean up the /work directory on that node from any leftovers from that user.
 # So copy any result data you need from there back to your home dir!
 # $SLURM_SUBMIT_DIR points to the directory from where the job was initially commited.
-OUTDIR="$HOME/cryo_calving_2019/output_data/2_Calving_vs_Volume_exp/"
+OUTDIR="$HOME/cryo_calving_2019/output_data/5_runs_width_depth_correction/${1/.py/}/"
 mkdir -p "$OUTDIR"
 
 # Copy any neccesary result data.
-cp -R "${WORKDIR}/sensitivity_calvsvol"*.csv "${OUTDIR}/"
-# cp -R "${WORKDIR}"/* "${OUTDIR}/"
+cp -R "${WORKDIR}/"*.csv "${OUTDIR}/"
+#cp -R "${WORKDIR}/per_glacier"* "${OUTDIR}/"
 
 # Print a final message so you can actually see it being done in the output log.
 echo "SLURM DONE"
-
