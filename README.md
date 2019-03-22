@@ -24,7 +24,8 @@ different model configurations.
 by correcting the depth and width of the terminus. (read
  [Recinos, et al,. in review](https://doi.org/10.5194/tc-2018-254) for more
  details).
-  
+
+6. Velocity experiment 
 
 * To run the scripts make sure you have this repository on 
 the home directory of your cluster environment.
