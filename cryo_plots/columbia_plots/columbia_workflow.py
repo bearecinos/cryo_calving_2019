@@ -60,6 +60,10 @@ print(total_vol)
 total_vol_c = np.nansum(vol_total_c) * 1e-9
 print(total_vol_c)
 
+percentage = total_vol_c * 100 / total_vol
+
+print('Volume percentage Columbia', percentage-100)
+
 # Plotting functions
 # # ----------------
 @graphics._plot_map

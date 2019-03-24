@@ -1,6 +1,5 @@
 # This script will plot the calving flux of alaska
 # with depth and width correction
-
 import numpy as np
 import pandas as pd
 import os
@@ -8,6 +7,7 @@ import seaborn as sns
 os.getcwd()
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
+import oggm
 
 MAIN_PATH = os.path.expanduser('~/cryo_calving_2019/')
 
@@ -49,6 +49,28 @@ df = pd.DataFrame(data=d)
 diff = df['OGGM default'] - df['McNabb et al. (2015)']
 diff_corrected = df['OGGM width and depth corrected'] - df['McNabb et al. (2015)']
 
+
+
+
+RMSD_no_correction = oggm.utils.rmsd(Fa_lit['calving_flux_Gtyr']*1.091,
+                                     Fa_oggm_sel['calving_flux'])
+RMSD_with_correction = oggm.utils.rmsd(Fa_lit['calving_flux_Gtyr']*1.091,
+                                       Fa_oggm_sel_corrected['calving_flux'])
+
+print('RMSD between observations and oggm no correction',RMSD_no_correction)
+print('RMSD between observations and oggm with correction', RMSD_with_correction)
+
+mean_dev = oggm.utils.md(Fa_lit['calving_flux_Gtyr']*1.091,
+                                     Fa_oggm_sel['calving_flux'])
+mean_dev_c = oggm.utils.md(Fa_lit['calving_flux_Gtyr']*1.091,
+                                       Fa_oggm_sel_corrected['calving_flux'])
+
+print('mean difference between observations and oggm with no correction', mean_dev)
+print('mean difference between observations and oggm with correction', mean_dev_c)
+
+diff = df['OGGM default'] - df['McNabb et al. (2015)']
+diff_corrected = df['OGGM width and depth corrected'] - df['McNabb et al. (2015)']
+
 # Set figure width and height in cm
 width_cm = 12
 height_cm = 6
@@ -68,7 +90,7 @@ letkm = dict(color='black', ha='left', va='top', fontsize=20,
 
 N = len(df)
 ind = np.arange(N)
-print(ind)
+print(len(ind))
 graph_width = 0.3
 labels = df.index.values
 print(labels)

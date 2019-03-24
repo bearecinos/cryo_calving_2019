@@ -36,7 +36,7 @@ axs = ImageGrid(f, 111,  # as in plt.subplot(111)
                 cbar_location="right",
                 cbar_mode="each",
                 cbar_size="7%",
-                cbar_pad=0.05)
+                cbar_pad=0.15)
 
 llkw = {'interval': 0}
 letkm = dict(color='black', ha='left', va='top', fontsize=20,

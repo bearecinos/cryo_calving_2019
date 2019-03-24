@@ -176,6 +176,7 @@ for i, j in zip(volume_no_calving, volume_calving):
 print('Percentage', percentage)
 
 print('Percent for columbia', calculate_volume_percentage(270.40, 349.39))
+print('Gt equivalent columbia', 2.98161468959857/1.091)
 
 
 d = {'Experiment No': exp_number,
