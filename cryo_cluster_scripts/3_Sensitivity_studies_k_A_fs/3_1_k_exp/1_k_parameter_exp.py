@@ -150,6 +150,7 @@ for f in factors:
         if gdir.terminus_type == 'Marine-terminating':
             # Find a calving flux.
             cfg.PARAMS['k_calving'] = 2.4*f
+
             df = utils.find_inversion_calving(gdir)
 
             cal_dic = dict(calving_fluxes=df['calving_flux'].iloc,

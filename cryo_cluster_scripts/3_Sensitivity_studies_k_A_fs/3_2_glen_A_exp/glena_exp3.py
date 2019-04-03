@@ -131,7 +131,7 @@ for f in factors:
     suf = '_k1_cfgAxfactors_cfgfs_' + '%.2f' % f
 
     cfg.PARAMS['inversion_glen_a'] = 2.4e-24*f
-    cfg.PARAMS['k_calving'] = 0.68515
+    cfg.PARAMS['k_calving'] = 0.63008
 
     if RUN_INVERSION:
         # Inversion tasks
@@ -151,11 +151,7 @@ for f in factors:
         # Selecting the tidewater glaciers on the region
         if gdir.terminus_type == 'Marine-terminating':
             # Find a calving flux.
-            # We find the free_board
-            free_board = utils.calving_flux_from_depth(gdir)['free_board']
-
-            df = utils.find_inversion_calving(gdir,
-                                              water_depth=(1/3)*free_board)
+            df = utils.find_inversion_calving(gdir)
 
             cal_dic = dict(calving_fluxes=df['calving_flux'].iloc,
                            mu_star_calving=df['mu_star'].iloc,

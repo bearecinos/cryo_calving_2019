@@ -89,6 +89,7 @@ letkm = dict(color='black', ha='left', va='top', fontsize=20,
              bbox=dict(facecolor='white', edgecolor='black'))
 
 N = len(df)
+#ind = np.arange(0,2*N,2)
 ind = np.arange(N)
 print(len(ind))
 graph_width = 0.3
@@ -96,15 +97,20 @@ labels = df.index.values
 print(labels)
 
 ax = fig.add_subplot(111)
-p1 = plt.bar(ind, df['OGGM default'].values, graph_width, color=sns.xkcd_rgb["ocean blue"])
+p1 = plt.bar(ind, df['OGGM default'].values, graph_width,
+             color = sns.xkcd_rgb["ocean blue"]),
+             #edgecolor = sns.xkcd_rgb["ocean blue"])
 p2 = plt.bar(ind+graph_width, df['OGGM width and depth corrected'].values, graph_width,
-             color=sns.xkcd_rgb["teal green"])#, yerr=std_oggm)
+             color = sns.xkcd_rgb["teal green"])
+             #edgecolor = sns.xkcd_rgb["teal green"])#, yerr=std_oggm)
 p3 = plt.bar(ind+2*graph_width, df['McNabb et al. (2015)'].values, graph_width,
-             color=sns.xkcd_rgb["burnt orange"])#, yerr=std_fix)
+             color = sns.xkcd_rgb["burnt orange"])
+             #edgecolor = sns.xkcd_rgb["burnt orange"] )#, yerr=std_fix)
 ax.axhline(y=0, color='k', linewidth=1.1)
 ax.tick_params(axis='both', bottom=True, left=True, width=2, direction='out', length=5)
 plt.ylabel('Frontal ablation \n [km³$yr^{-1}$]')
 plt.xticks(ind + graph_width, labels, rotation='vertical')
+ax.set_xticks(ind + graph_width)
 
 plt.ylim(0,8)
 

@@ -161,11 +161,11 @@ plt.plot(k, b3 + m3*k, '--', color='black', linewidth=3.0,
 
 plt.plot(k1, obs[0], 'x', markersize=20,
          color=sns.xkcd_rgb["ocean blue"], linewidth=4,
-         label='k1 = 0.68')
+         label='k1 = 0.63008')
 
 plt.plot(k2, obs[0], 'x', markersize=20,
          color=sns.xkcd_rgb["teal green"], linewidth=4,
-         label='k2 = 0.78')
+         label='k2 = 0.63658')
 
 
 plt.fill_between(k, (b3 + m3*k) - 3.96, (b3 + m3*k) + 3.96,
@@ -183,7 +183,6 @@ letkm = dict(color='black', ha='left', va='top', fontsize=20,
 
 plt.margins(0.05)
 plt.show()
-
 
 ################### reading Glen A exp ##########################################
 
@@ -397,8 +396,6 @@ plt.plot(glena_2, obs[0], 'x', markersize=20,
 
 plt.plot(glena_3, obs[0], 'x', markersize=20,
          linewidth=4)
-
-
 
 plt.plot(glen_a, np.repeat(15.11*1.091, len(glen_a)), '--', color='black',
              label='Frontal ablation (McNabb et al., 2015)', linewidth=3.0)

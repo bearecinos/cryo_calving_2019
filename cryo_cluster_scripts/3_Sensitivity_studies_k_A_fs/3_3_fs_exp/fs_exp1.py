@@ -131,7 +131,7 @@ for f in factors:
     suf = '_k1_cfgA_fsxfactors_' + '%.2f' % f
 
     cfg.PARAMS['inversion_fs'] = 5.7e-20*f
-    cfg.PARAMS['k_calving'] = 0.68515
+    cfg.PARAMS['k_calving'] = 0.63008
 
     if RUN_INVERSION:
         # Inversion tasks

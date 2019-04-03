@@ -174,7 +174,7 @@ if Plot_fig_1:
 
 
 # figure 2  ---------------
-Plot_fig_2 = False
+Plot_fig_2 = True
 
 if Plot_fig_2:
 
@@ -217,7 +217,7 @@ if Plot_fig_2:
                              dpi=150, bbox_inches='tight')
 
 # figure 3 -------------
-Plot_fig_3 = False
+Plot_fig_3 = True
 
 if Plot_fig_3:
 

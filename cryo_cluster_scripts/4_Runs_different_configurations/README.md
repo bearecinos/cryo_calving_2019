@@ -5,14 +5,14 @@ configurations.
 
 | Configuration  | Description                                                                 |
 | -------------: | :--------------------------------------------------------------------------:|
-| 1              |  k<sub>1</sub> = 0.68515, Glen A = OGGM default, f<sub>s</sub> = 0.0         |
-| 2              |  k<sub>2</sub> = 0.7899, Glen A = OGGM default, f<sub>s</sub> = 0.0          |
-| 3              |  k<sub>1</sub> = 0.68515, Glen A = OGGM default, f<sub>s</sub> = OGGM default|
-| 4              |  k<sub>2</sub> = 0.7899, Glen A = OGGM default, f<sub>s</sub> = OGGM default |
-| 5              |  k<sub>1</sub> = 0.68515, Glen A = 2.92e10−24, f<sub>s</sub> = 0.0           |
-| 6              |  k<sub>2</sub> = 0.7899, Glen A = 4.04e10−24, f<sub>s</sub> = 0.0            |
-| 7              |  k<sub>1</sub> = 0.68515, Glen A = 2.58e10−24 , f<sub>s</sub> = OGGM default |
-| 8              |  k<sub>2</sub> = 0.7899, Glen A = 3.69e10−24, f<sub>s</sub> = OGGM default   |
+| 1              |  k<sub>1</sub> = 0.63008, Glen A = OGGM default, f<sub>s</sub> = 0.0         |
+| 2              |  k<sub>2</sub> = 0.63658, Glen A = OGGM default, f<sub>s</sub> = 0.0          |
+| 3              |  k<sub>1</sub> = 0.63008, Glen A = OGGM default, f<sub>s</sub> = OGGM default|
+| 4              |  k<sub>2</sub> = 0.63658, Glen A = OGGM default, f<sub>s</sub> = OGGM default |
+| 5              |  k<sub>1</sub> = 0.63008, Glen A = 2.44913e-24, f<sub>s</sub> = 0.0           |
+| 6              |  k<sub>2</sub> = 0.63658, Glen A = 2.05433e-24, f<sub>s</sub> = 0.0            |
+| 7              |  k<sub>1</sub> = 0.63008, Glen A = 2.00682e-24, f<sub>s</sub> = OGGM default |
+| 8              |  k<sub>2</sub> = 0.63658, Glen A = 2.18243e-24, f<sub>s</sub> = OGGM default   |
 
 The content of each experiment (each folder) is the following:
 

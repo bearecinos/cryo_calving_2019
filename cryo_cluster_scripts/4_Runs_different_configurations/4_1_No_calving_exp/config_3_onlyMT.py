@@ -60,7 +60,7 @@ cfg.PARAMS['use_tar_shapefiles'] = False
 
 # Inversion and calving configuration
 cfg.PARAMS['inversion_fs'] = 5.7e-20
-cfg.PARAMS['k_calving'] = 0.68515
+cfg.PARAMS['k_calving'] = 0.63008
 # Default glen a
 
 # We use intersects

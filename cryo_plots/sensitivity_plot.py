@@ -7,6 +7,7 @@ import seaborn as sns
 os.getcwd()
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
+from matplotlib.offsetbox import AnchoredText
 
 # Functions that we need
 def read_experiment_file(filename):
@@ -65,8 +66,8 @@ obs = np.repeat(15.11 * 1.091, len(k))
 #From the find_intercepts scripts we copy
 m3 = 0.0
 b3 = 16.48501
-k1 = 0.68515
-k2 = 0.7899
+k1 = 0.63008
+k2 = 0.63658
 
 my_labels_k = {"x1": "A = OGGM default, fs = 0.0",
                "x2": "A = OGGM default, fs = OGGM default"}
@@ -129,15 +130,15 @@ data_frame2_A = cf2_A.T
 data_frame3_A = cf3_A.T
 
 #From find_intercepts.py we copy
-glena_0 = 2.9170490361639673e-24
-glena_1 = 4.046775676070392e-24
-glena_2 = 2.58794913609446e-24
-glena_3 = 3.696920690787704e-24
+glen_0 = 2.449128057297893e-24
+glen_1 = 2.0543360734900777e-24
+glen_2 = 2.0068191877884726e-24
+glen_3 = 2.182428311427055e-24
 
-my_labels_glena = {"x0": "fs = 0.0, $k_{1}$ = 0.68",
-                   "x1": "fs = 0.0, $k_{2}$ = 0.78",
-                   "x2": "fs = OGGM default, $k_{1}$ = 0.68",
-                   "x3": "fs = OGGM default, $k_{2}$ = 0.78"}
+my_labels_glena = {"x0": "fs = 0.0, $k_{1}$ = 0.63008",
+                   "x1": "fs = 0.0, $k_{2}$ = 0.63658",
+                   "x2": "fs = OGGM default, $k_{1}$ = 0.63008",
+                   "x3": "fs = OGGM default, $k_{2}$ = 0.63658"}
 
 ######################################### Reading fs x factors experiments
 
@@ -181,8 +182,8 @@ cf2_fs = cf2_fs['calving_flux'].sum(axis=0)
 data_frame1_fs = cf1_fs.T
 data_frame2_fs = cf2_fs.T
 
-my_labels_fs = {"x1": "A = OGGM default, $k_{1}$ = 0.68",
-                "x2": "A = OGGM default, $k_{2}$ = 0.78"}
+my_labels_fs = {"x1": "A = OGGM default, $k_{1}$ = 0.63008",
+                "x2": "A = OGGM default, $k_{2}$ = 0.63658"}
 
 
 ######################################## plot ######################################
@@ -216,10 +217,10 @@ plt.plot(k, data_frame2, "o", color=sns.xkcd_rgb["teal green"],
 
 plt.plot(k1, obs[0], 'x', markersize=12,
          color=sns.xkcd_rgb["ocean blue"], linewidth=4,
-         label='k1 = 0.68')
+         label='k1 = 0.63008')
 plt.plot(k2, obs[0], 'x', markersize=12,
          color=sns.xkcd_rgb["teal green"], linewidth=4,
-         label='k2 = 0.78')
+         label='k2 = 0.63658')
 
 plt.plot(k, b3 + m3*k, '--', color='black', linewidth=3.0,
         label='Frontal ablation (McNabb et al., 2015)')
@@ -230,9 +231,9 @@ plt.gca().axes.get_xaxis().set_visible(True)
 plt.ylabel('Alaska frontal ablation \n [$km³.yr^{-1}$]')
 plt.xlabel('Calving constant k [$\mathregular{yr^{-1}}$] ')
 plt.legend(loc='lower right', borderaxespad=0.)
-letkm = dict(color='black', ha='left', va='top', fontsize=20,
-                 bbox=dict(facecolor='white', edgecolor='black'))
-plt.text(0.135, 25.4, 'a', **letkm)
+at = AnchoredText('a', prop=dict(size=20), frameon=True, loc=2)
+ax1.add_artist(at)
+
 plt.margins(0.05)
 
 
@@ -277,9 +278,10 @@ plt.ylabel('Alaska frontal ablation \n [$km³.yr^{-1}$]')
 plt.xlabel('Glen A [$\mathregular{s^{−1}} \mathregular{Pa^{−3}}$]')
 
 plt.legend(loc='upper right', borderaxespad=0.)
-letkm = dict(color='black', ha='left', va='top', fontsize=20,
-                 bbox=dict(facecolor='white', edgecolor='black'))
-plt.text(1.29e-24, 23.6, 'b', **letkm)
+
+at = AnchoredText('b', prop=dict(size=20), frameon=True, loc=2)
+ax2.add_artist(at)
+
 plt.margins(0.05)
 
 
@@ -306,10 +308,10 @@ plt.gca().axes.get_xaxis().set_visible(True)
 plt.ylabel('Alaska frontal ablation \n [$km³.yr^{-1}$]')
 plt.xlabel('Sliding parameter $f_{s}$ [$\mathregular{s^{−1}} \mathregular{Pa^{−3}}$]')
 plt.legend(loc='upper right', borderaxespad=0.)
-letkm = dict(color='black', ha='left', va='top', fontsize=20,
-                 bbox=dict(facecolor='white', edgecolor='black'))
 
-plt.text(-3.1e-21, 20.75, 'c', **letkm)
+at = AnchoredText('c', prop=dict(size=20), frameon=True, loc=2)
+ax3.add_artist(at)
+
 plt.margins(0.05)
 
 plt.subplots_adjust(hspace=0.2)
