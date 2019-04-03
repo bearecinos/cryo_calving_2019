@@ -70,12 +70,12 @@ ds = pd.DataFrame(ds)
 
 ## Different water depths exp
 dg = pd.DataFrame()
-dg['$d$ = 001 m'] = utils.find_inversion_calving(gdir, water_depth=1)['calving_flux']
-dg['$d$ = 100 m'] = utils.find_inversion_calving(gdir, water_depth=100)['calving_flux']
-dg['$d$ = 200 m'] = utils.find_inversion_calving(gdir, water_depth=200)['calving_flux']
-dg['$d$ = 300 m'] = utils.find_inversion_calving(gdir, water_depth=300)['calving_flux']
-dg['$d$ = 400 m'] = utils.find_inversion_calving(gdir, water_depth=400)['calving_flux']
-dg['$d$ = 500 m'] = utils.find_inversion_calving(gdir, water_depth=500)['calving_flux']
+dg['$d$ = 001 m'] = utils.find_inversion_calving(gdir, initial_water_depth=1)['calving_flux']
+dg['$d$ = 100 m'] = utils.find_inversion_calving(gdir, initial_water_depth=100)['calving_flux']
+dg['$d$ = 200 m'] = utils.find_inversion_calving(gdir, initial_water_depth=200)['calving_flux']
+dg['$d$ = 300 m'] = utils.find_inversion_calving(gdir, initial_water_depth=300)['calving_flux']
+dg['$d$ = 400 m'] = utils.find_inversion_calving(gdir, initial_water_depth=400)['calving_flux']
+dg['$d$ = 500 m'] = utils.find_inversion_calving(gdir, initial_water_depth=500)['calving_flux']
 
 from matplotlib import gridspec
 from matplotlib.offsetbox import AnchoredText
