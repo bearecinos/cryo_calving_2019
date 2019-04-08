@@ -32,7 +32,8 @@ the home directory of your cluster environment.
 * To run the scripts you **must follow the order of the folders.** 
 * All scripts require a modified version of **RGI v.6.0**, where four 
 *Marine-terminating glaciers* have been merged with their respective branches. 
-**This file is already located in the input_data folder of the repository.**  
+**This file is located 
+[here](https://cluster.klima.uni-bremen.de/~bea/cryo_calving_input_data/).**  
 
 * RGI id's of the glacier merged:    
 
@@ -49,10 +50,6 @@ the Columbia Glacier pre-processing run.
 **You can't run these folders without having ran the scripts 
 in folder # 1.** 
 
-* All the data need it for the runs can be found in the input data folder.
-* The output of every run will be save in your cluster home 
-`~/cryo_calving_2018/output_data/` folder.    
-
 **II. cryo_plots** (scripts for producing the figures)
 * You will be able to run these scripts after you have completed the runs
 in cryo_cluster_scripts and copied to your PC home directory the output_data
@@ -60,17 +57,14 @@ in cryo_cluster_scripts and copied to your PC home directory the output_data
  The right path to copy this folder is in:
    `~/cryo_calving_2018/output_data/`
 
-**III. Input data** 
-* Contains all data necessary to run all the scripts.
+**Input data** 
+* The input data to run all the scripts can be found 
+[here](https://cluster.klima.uni-bremen.de/~bea/cryo_calving_input_data/)
 
-**IV. Output data**
+**Output data**
 * This folder will be generated once you have ran the 
 first script of the folder cryo_cluster_scripts.
 * Contains the output files for each folder in the cryo_cluster_scripts.
-
-**V. plots** 
-* Where all the plots get saved.
-
 
 #### Please read the top of the scripts to know more about the ouput of each run.
 
