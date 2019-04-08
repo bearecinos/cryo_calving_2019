@@ -66,8 +66,8 @@ obs = np.repeat(15.11 * 1.091, len(k))
 #From the find_intercepts scripts we copy
 m3 = 0.0
 b3 = 16.48501
-k1 = 0.63008
-k2 = 0.63658
+k1 = 0.62958
+k2 = 0.66479
 
 my_labels_k = {"x1": "A = OGGM default, fs = 0.0",
                "x2": "A = OGGM default, fs = OGGM default"}
@@ -130,15 +130,15 @@ data_frame2_A = cf2_A.T
 data_frame3_A = cf3_A.T
 
 #From find_intercepts.py we copy
-glen_0 = 2.449128057297893e-24
-glen_1 = 2.0543360734900777e-24
-glen_2 = 2.0068191877884726e-24
-glen_3 = 2.182428311427055e-24
+glen_0 = 2.400069701850777e-24
+glen_1 = 2.7178992962449867e-24
+glen_2 = 2.0991333890664777e-24
+glen_3 = 2.398751169234637e-24
 
-my_labels_glena = {"x0": "fs = 0.0, $k_{1}$ = 0.63008",
-                   "x1": "fs = 0.0, $k_{2}$ = 0.63658",
-                   "x2": "fs = OGGM default, $k_{1}$ = 0.63008",
-                   "x3": "fs = OGGM default, $k_{2}$ = 0.63658"}
+my_labels_glena = {"x0": "fs = 0.0, " + 'k1 = '+ str(round(k1, 2)),
+                   "x1": "fs = 0.0, " + 'k2 = '+ str(round(k2, 2)),
+                   "x2": "fs = OGGM default, " + 'k1 = ' + str(round(k1, 2)),
+                   "x3": "fs = OGGM default, " + 'k2 = ' + str(round(k2, 2))}
 
 ######################################### Reading fs x factors experiments
 
@@ -182,8 +182,8 @@ cf2_fs = cf2_fs['calving_flux'].sum(axis=0)
 data_frame1_fs = cf1_fs.T
 data_frame2_fs = cf2_fs.T
 
-my_labels_fs = {"x1": "A = OGGM default, $k_{1}$ = 0.63008",
-                "x2": "A = OGGM default, $k_{2}$ = 0.63658"}
+my_labels_fs = {"x1": "A = OGGM default, " + 'k1 = '+ str(round(k1, 2)),
+                "x2": "A = OGGM default, " 'k2 = '+ str(round(k2, 2))}
 
 
 ######################################## plot ######################################
@@ -217,10 +217,10 @@ plt.plot(k, data_frame2, "o", color=sns.xkcd_rgb["teal green"],
 
 plt.plot(k1, obs[0], 'x', markersize=12,
          color=sns.xkcd_rgb["ocean blue"], linewidth=4,
-         label='k1 = 0.63008')
+         label='k1 = '+ str(round(k1, 2)))
 plt.plot(k2, obs[0], 'x', markersize=12,
          color=sns.xkcd_rgb["teal green"], linewidth=4,
-         label='k2 = 0.63658')
+         label='k2 = '+ str(round(k2, 2)))
 
 plt.plot(k, b3 + m3*k, '--', color='black', linewidth=3.0,
         label='Frontal ablation (McNabb et al., 2015)')

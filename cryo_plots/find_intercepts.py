@@ -9,6 +9,7 @@ import seaborn as sns
 os.getcwd()
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
+from decimal import Decimal
 
 # Functions that we need
 def read_experiment_file(filename):
@@ -87,17 +88,17 @@ print('equal', data_frame1[data_frame1['calving_flux'] == obs[0]].index.values)
 print('bigger', data_frame1[data_frame1['calving_flux'] > obs[0]].index.values)
 
 # k2
-print('FOR K1______')
+print('FOR K2______')
 print('lower', data_frame2[data_frame2['calving_flux'] < obs[0]].index.values)
 print('equal', data_frame2[data_frame2['calving_flux'] == obs[0]].index.values)
 print('bigger', data_frame2[data_frame2['calving_flux'] > obs[0]].index.values)
 
 #Defining the points
-points_k1 = np.asarray([k[9], data_frame1.iloc[9]['calving_flux'],
-          k[10], data_frame1.iloc[10]['calving_flux']])
+points_k1 = np.asarray([k[8], data_frame1.iloc[8]['calving_flux'],
+          k[9], data_frame1.iloc[9]['calving_flux']])
 
-points_k2 = np.asarray([k[11], data_frame2.iloc[11]['calving_flux'],
-          k[12], data_frame2.iloc[12]['calving_flux']])
+points_k2 = np.asarray([k[8], data_frame2.iloc[8]['calving_flux'],
+          k[9], data_frame2.iloc[9]['calving_flux']])
 
 points_obs = np.asanyarray([k[0], obs[0],
           k[1], obs[1]])
@@ -161,11 +162,11 @@ plt.plot(k, b3 + m3*k, '--', color='black', linewidth=3.0,
 
 plt.plot(k1, obs[0], 'x', markersize=20,
          color=sns.xkcd_rgb["ocean blue"], linewidth=4,
-         label='k1 = 0.63008')
+         label='k1 ='+ str(round(k1, 2)))
 
 plt.plot(k2, obs[0], 'x', markersize=20,
          color=sns.xkcd_rgb["teal green"], linewidth=4,
-         label='k2 = 0.63658')
+         label='k2 =' + str(round(k2, 2)))
 
 
 plt.fill_between(k, (b3 + m3*k) - 3.96, (b3 + m3*k) + 3.96,
@@ -183,6 +184,7 @@ letkm = dict(color='black', ha='left', va='top', fontsize=20,
 
 plt.margins(0.05)
 plt.show()
+
 
 ################### reading Glen A exp ##########################################
 
@@ -286,17 +288,17 @@ print('bigger', data_frame3_A[data_frame3_A['calving_flux'] > obs[0]].index.valu
 
 
 #Defining the points
-points_glena_0 = np.asarray([glen_a[30], data_frame0_A.iloc[30]['calving_flux'],
-          glen_a[31], data_frame0_A.iloc[31]['calving_flux']])
+points_glena_0 = np.asarray([glen_a[20], data_frame0_A.iloc[20]['calving_flux'],
+          glen_a[21], data_frame0_A.iloc[21]['calving_flux']])
 
-points_glena_1 = np.asarray([glen_a[54], data_frame1_A.iloc[54]['calving_flux'],
-          glen_a[55], data_frame1_A.iloc[55]['calving_flux']])
+points_glena_1 = np.asarray([glen_a[26], data_frame1_A.iloc[26]['calving_flux'],
+          glen_a[27], data_frame1_A.iloc[27]['calving_flux']])
 
-points_glena_2 = np.asarray([glen_a[23], data_frame2_A.iloc[23]['calving_flux'],
-          glen_a[24], data_frame2_A.iloc[24]['calving_flux']])
+points_glena_2 = np.asarray([glen_a[13], data_frame2_A.iloc[13]['calving_flux'],
+          glen_a[14], data_frame2_A.iloc[14]['calving_flux']])
 
-points_glena_3 = np.asarray([glen_a[47], data_frame3_A.iloc[47]['calving_flux'],
-          glen_a[48], data_frame3_A.iloc[48]['calving_flux']])
+points_glena_3 = np.asarray([glen_a[19], data_frame3_A.iloc[19]['calving_flux'],
+          glen_a[20], data_frame3_A.iloc[20]['calving_flux']])
 
 points_glena_obs = np.asanyarray([glen_a[0], obs[0],
           glen_a[1], obs[1]])
@@ -365,10 +367,10 @@ print('glen_3', glena_3)
 
 fig = plt.figure(2, figsize=(width_cm, height_cm))
 
-my_labels_glena = {"x0": "fs = 0.0, $k_{1}$ = 0.68",
-                   "x1": "fs = 0.0, $k_{2}$ = 0.78",
-                   "x2": "fs = OGGM default, $k_{1}$ = 0.68",
-                   "x3": "fs = OGGM default, $k_{2}$ = 0.78"}
+my_labels_glena = {"x0": "fs = 0.0, " + 'k1 = '+ str(round(k1, 2)),
+                   "x1": "fs = 0.0, " + 'k2 = '+ str(round(k2, 2)),
+                   "x2": "fs = OGGM default, " + 'k1 = ' + str(round(k1, 2)),
+                   "x3": "fs = OGGM default, " + 'k2 = ' + str(round(k2, 2))}
 sns.set_color_codes("colorblind")
 sns.set_style("white")
 

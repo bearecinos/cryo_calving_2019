@@ -9,6 +9,7 @@ rcParams['ytick.labelsize'] = 20
 rcParams['legend.fontsize'] = 15
 from matplotlib.offsetbox import AnchoredText
 import seaborn as sns
+from oggm.core import inversion
 
 
 MAIN_PATH = os.path.expanduser('~/cryo_calving_2019/')
@@ -28,11 +29,11 @@ gdir = workflow.init_glacier_regions(['RGI60-01.03622'],
                                      from_prepro_level=3)[0]
 
 #### Finding the optimum thickness
-dr = utils.find_inversion_calving(gdir)
+dr = inversion.find_inversion_calving(gdir)
 
 gdir.inversion_calving_rate = 0
 cfg.PARAMS['k_calving'] = 10  # default is 2.4
-dm = utils.find_inversion_calving(gdir)
+dm = inversion.find_inversion_calving(gdir)
 
 
 f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2,

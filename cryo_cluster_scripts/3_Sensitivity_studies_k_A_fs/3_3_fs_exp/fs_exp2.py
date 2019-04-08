@@ -18,6 +18,7 @@ from oggm import workflow
 from oggm import tasks
 from oggm.workflow import execute_entity_task
 from oggm import utils
+from oggm.core import inversion
 
 # Time
 import time
@@ -131,7 +132,7 @@ for f in factors:
     suf = '_k2_cfgA_fsxfactors_' + '%.2f' % f
 
     cfg.PARAMS['inversion_fs'] = 5.7e-20*f
-    cfg.PARAMS['k_calving'] = 0.63658
+    cfg.PARAMS['k_calving'] = 0.66479
 
     if RUN_INVERSION:
         # Inversion tasks
@@ -151,15 +152,7 @@ for f in factors:
         # Selecting the tidewater glaciers on the region
         if gdir.terminus_type == 'Marine-terminating':
             # Find a calving flux.
-            df = utils.find_inversion_calving(gdir)
-
-            cal_dic = dict(calving_fluxes=df['calving_flux'].iloc,
-                           mu_star_calving=df['mu_star'].iloc,
-                           t_width=df['width'].iloc[-1],
-                           water_depth=df['water_depth'].iloc)
-            forwrite.append(cal_dic)
-            # We write out everything
-            gdir.write_pickle(forwrite, 'calving_output')
+            inversion.find_inversion_calving(gdir)
 
     # Compile output
     utils.compile_glacier_statistics(gdirs, filesuffix='_with_calving_' + suf,

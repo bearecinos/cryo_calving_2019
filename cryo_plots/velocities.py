@@ -13,10 +13,10 @@ from matplotlib import rcParams
 rcParams['axes.labelsize'] = 20
 rcParams['xtick.labelsize'] = 20
 rcParams['ytick.labelsize'] = 20
-rcParams['legend.fontsize'] = 12
+rcParams['legend.fontsize'] = 16
 # Set figure width and height in cm
 width_cm = 12
-height_cm = 6
+height_cm = 8
 
 
 # Reading glacier directories per experiment
@@ -101,11 +101,11 @@ for gdir, gdir_c in zip(gdirs_one,gdirs_two):
     if vel_c[-1] > 0.0:
         #print(vel_c)
         plt.plot(x_c, vel_c-vel, '-', label=gdir.rgi_id, linewidth=2.5)
-        plt.legend(loc='upper left')#, bbox_to_anchor=(1.0, 0.5))
+        plt.legend(loc='upper left', ncol=2, bbox_to_anchor=(1.0, 1.02))
         plt.xlabel('Normalised distance along the main flowline')
         plt.ylabel('Velocity difference [$km.yr^{-1}$]')
 
 plt.margins(0.05)
 #plt.show()
 plt.savefig(os.path.join(plot_path,'velocity_differences.pdf'),
-                              dpi=150, bbox_inches='tight')
+                               dpi=150, bbox_inches='tight')

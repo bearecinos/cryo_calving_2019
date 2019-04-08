@@ -131,14 +131,6 @@ for gdir in gdirs:
     # Selecting the tidewater glaciers on the region
     if gdir.terminus_type == 'Marine-terminating':
         # Find a calving flux.
-        df = utils.find_inversion_calving(gdir)
-
-        cal_dic = dict(calving_fluxes = df['calving_flux'].iloc,
-                       mu_star_calving = df['mu_star'].iloc,
-                       t_width = df['width'].iloc[-1],
-                       water_depth = df['water_depth'].iloc)
-        forwrite.append(cal_dic)
-        # We write out everything
-        gdir.write_pickle(forwrite, 'calving_output')
+        inversion.find_inversion_calving(gdir)
 
 utils.compile_glacier_statistics(gdirs, filesuffix='_Columbia_with_calving_with_sliding_')

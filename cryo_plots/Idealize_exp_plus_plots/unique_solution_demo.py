@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from oggm import cfg, utils, workflow, tasks, graphics
+from oggm.core import inversion
 from matplotlib import rcParams
 rcParams['axes.labelsize'] = 20
 rcParams['xtick.labelsize'] = 20
@@ -29,18 +30,18 @@ gdir = workflow.init_glacier_regions(['RGI60-01.03622'],
                                      from_prepro_level=3)[0]
 ### Idealize experiments
 #default calving flux
-print(utils.calving_flux_from_depth(gdir))
+print(inversion.calving_flux_from_depth(gdir))
 
 df = []
 for thick in np.linspace(0, 500, 51):
-    df.append(utils.calving_flux_from_depth(gdir, thick=thick))
+    df.append(inversion.calving_flux_from_depth(gdir, thick=thick))
 
 df = pd.DataFrame(df).set_index('thick')
 
 ds = []
 for thick in np.linspace(0, 500, 51):
     # This function simply computes the calving law
-    out = utils.calving_flux_from_depth(gdir, thick=thick)
+    out = inversion.calving_flux_from_depth(gdir, thick=thick)
     out['Thick (prescribed)'] = out.pop('thick')
 
     # Now we feed it back to OGGM
@@ -53,11 +54,11 @@ for thick in np.linspace(0, 500, 51):
     v_inv, _ = tasks.mass_conservation_inversion(gdir)
 
     # Now we get the OGGM ice thickness
-    out['Thick (OGGM)'] = utils.calving_flux_from_depth(gdir)['thick']
+    out['Thick (OGGM)'] = inversion.calving_flux_from_depth(gdir)['thick']
 
     # Add sliding (the fs value is outdated, but still)
     v_inv, _ = tasks.mass_conservation_inversion(gdir, fs=5.7e-20)
-    out['Thick (OGGM with sliding)'] = utils.calving_flux_from_depth(gdir)['thick']
+    out['Thick (OGGM with sliding)'] = inversion.calving_flux_from_depth(gdir)['thick']
 
     # Store
     ds.append(out)
@@ -70,12 +71,12 @@ ds = pd.DataFrame(ds)
 
 ## Different water depths exp
 dg = pd.DataFrame()
-dg['$d$ = 001 m'] = utils.find_inversion_calving(gdir, initial_water_depth=1)['calving_flux']
-dg['$d$ = 100 m'] = utils.find_inversion_calving(gdir, initial_water_depth=100)['calving_flux']
-dg['$d$ = 200 m'] = utils.find_inversion_calving(gdir, initial_water_depth=200)['calving_flux']
-dg['$d$ = 300 m'] = utils.find_inversion_calving(gdir, initial_water_depth=300)['calving_flux']
-dg['$d$ = 400 m'] = utils.find_inversion_calving(gdir, initial_water_depth=400)['calving_flux']
-dg['$d$ = 500 m'] = utils.find_inversion_calving(gdir, initial_water_depth=500)['calving_flux']
+dg['$d$ = 001 m'] = inversion.find_inversion_calving(gdir, initial_water_depth=1)['calving_flux']
+dg['$d$ = 100 m'] = inversion.find_inversion_calving(gdir, initial_water_depth=100)['calving_flux']
+dg['$d$ = 200 m'] = inversion.find_inversion_calving(gdir, initial_water_depth=200)['calving_flux']
+dg['$d$ = 300 m'] = inversion.find_inversion_calving(gdir, initial_water_depth=300)['calving_flux']
+dg['$d$ = 400 m'] = inversion.find_inversion_calving(gdir, initial_water_depth=400)['calving_flux']
+dg['$d$ = 500 m'] = inversion.find_inversion_calving(gdir, initial_water_depth=500)['calving_flux']
 
 from matplotlib import gridspec
 from matplotlib.offsetbox import AnchoredText

@@ -16,6 +16,7 @@ from oggm import workflow
 from oggm import tasks
 from oggm.workflow import execute_entity_task
 from oggm import utils
+from oggm.core import inversion
 
 # Time
 import time
@@ -60,7 +61,7 @@ cfg.PARAMS['use_tar_shapefiles'] = False
 
 # Inversion and calving configuration
 cfg.PARAMS['inversion_fs'] = 5.7e-20
-cfg.PARAMS['k_calving'] = 0.63658
+cfg.PARAMS['k_calving'] = 0.66479
 # Default glen a
 
 # We use intersects

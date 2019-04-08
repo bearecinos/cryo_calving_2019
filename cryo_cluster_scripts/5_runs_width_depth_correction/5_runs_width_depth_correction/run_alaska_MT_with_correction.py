@@ -18,6 +18,7 @@ from oggm import workflow
 from oggm import tasks
 from oggm.workflow import execute_entity_task
 from oggm import utils
+from oggm.core import inversion
 
 # Time
 import time
@@ -158,21 +159,13 @@ for gdir in gdirs:
         w_depth = dfmac.loc[gdir.rgi_id]['depth']
         import math
         if math.isnan(w_depth):
-            df = utils.find_inversion_calving(gdir)
+            inversion.find_inversion_calving(gdir)
         else:
-            df = utils.find_inversion_calving(gdir,
+            inversion.find_inversion_calving(gdir,
                                               initial_water_depth = w_depth,
                                               fixed_water_depth = True)
     else:
-        df = utils.find_inversion_calving(gdir)
-
-    cal_dic = dict(calving_fluxes=df['calving_flux'].iloc,
-                   mu_star_calving=df['mu_star'].iloc,
-                   t_width=df['width'].iloc[-1],
-                   water_depth=df['water_depth'].iloc)
-    forwrite.append(cal_dic)
-    # We write out everything
-    gdir.write_pickle(forwrite, 'calving_output')
+        inversion.find_inversion_calving(gdir)
 
 # Compile output
 utils.compile_glacier_statistics(gdirs, filesuffix='_with_calving_' + suf)

@@ -16,6 +16,7 @@ from oggm import workflow
 from oggm import tasks
 from oggm.workflow import execute_entity_task
 from oggm import utils
+from oggm.core import inversion
 
 # Time
 import time
@@ -60,8 +61,8 @@ cfg.PARAMS['use_tar_shapefiles'] = False
 
 # Inversion and calving configuration
 cfg.PARAMS['inversion_fs'] = 5.7e-20
-cfg.PARAMS['k_calving'] = 0.63658
-cfg.PARAMS['inversion_glen_a'] = 2.18243e-24
+cfg.PARAMS['k_calving'] = 0.66479
+cfg.PARAMS['inversion_glen_a'] = 2.39875e-24
 
 # We use intersects
 path = utils.get_rgi_intersects_region_file(rgi_region, version=rgi_version)
@@ -145,15 +146,7 @@ suf = 'config_8_'
 for gdir in gdirs:
     forwrite = []
     # Find a calving flux.
-    df = utils.find_inversion_calving(gdir)
-    cal_dic = dict(calving_fluxes=df['calving_flux'].iloc,
-                   mu_star_calving=df['mu_star'].iloc,
-                   t_width=df['width'].iloc[-1],
-                   water_depth=df['water_depth'].iloc)
-    forwrite.append(cal_dic)
-    # We write out everything
-    gdir.write_pickle(forwrite, 'calving_output')
-
+    inversion.find_inversion_calving(gdir)
 
 # Compile output
 utils.compile_glacier_statistics(gdirs, filesuffix='_with_calving_' + suf)
