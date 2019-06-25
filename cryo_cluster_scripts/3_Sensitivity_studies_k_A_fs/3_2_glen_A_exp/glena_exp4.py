@@ -132,7 +132,7 @@ for f in factors:
     suf = '_k2_cfgAxfactors_cfgfs_' + '%.2f' % f
 
     cfg.PARAMS['inversion_glen_a'] = 2.4e-24*f
-    cfg.PARAMS['k_calving'] = 0.66479
+    cfg.PARAMS['k_calving'] = 0.6659
 
     if RUN_INVERSION:
         # Inversion tasks

@@ -93,9 +93,7 @@ log.info('Number of glaciers: {}'.format(len(rgidf)))
 # -----------------------------------
 gdirs = workflow.init_glacier_regions(rgidf)
 
-factors = [0.00, 0.10, 0.20, 0.30, 0.40,
-           0.50, 0.60, 0.70, 0.80, 0.90,
-           1.00, 1.10, 1.20]
+factors = np.arange(0.00,3.00,0.10)
 
 if RUN_GIS_mask:
     execute_entity_task(tasks.glacier_masks, gdirs)
@@ -132,7 +130,7 @@ for f in factors:
     suf = '_k2_cfgA_fsxfactors_' + '%.2f' % f
 
     cfg.PARAMS['inversion_fs'] = 5.7e-20*f
-    cfg.PARAMS['k_calving'] = 0.66479
+    cfg.PARAMS['k_calving'] = 0.6659
 
     if RUN_INVERSION:
         # Inversion tasks

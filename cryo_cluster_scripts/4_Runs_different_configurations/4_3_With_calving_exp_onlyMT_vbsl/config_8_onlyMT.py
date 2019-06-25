@@ -61,8 +61,8 @@ cfg.PARAMS['use_tar_shapefiles'] = False
 
 # Inversion and calving configuration
 cfg.PARAMS['inversion_fs'] = 5.7e-20
-cfg.PARAMS['k_calving'] = 0.66479
-cfg.PARAMS['inversion_glen_a'] = 2.39875e-24
+cfg.PARAMS['k_calving'] = 0.6659
+cfg.PARAMS['inversion_glen_a'] = 2.40185e-24
 
 # We use intersects
 path = utils.get_rgi_intersects_region_file(rgi_region, version=rgi_version)

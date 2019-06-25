@@ -55,6 +55,10 @@ def init_velocity(workdir):
     keep_glactype = [(i not in glac_type) for i in rgidf.TermType]
     rgidf = rgidf.iloc[keep_glactype]
 
+    # columbia = ['RGI60-01.10689']
+    # keep_indexes = [(i in columbia) for i in rgidf.RGIId]
+    # rgidf = rgidf.iloc[keep_indexes]
+
     return workflow.init_glacier_regions(rgidf)
 
 def calculate_velocity(gdir):

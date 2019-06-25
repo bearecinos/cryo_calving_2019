@@ -1,7 +1,6 @@
 # This script will plot the workflow for the columbia glacier, the calving output
 # and the columbia bed profile along the main centreline
 
-
 """Useful plotting functions"""
 import netCDF4
 import pandas as pd
@@ -17,7 +16,6 @@ from oggm import cfg, graphics
 
 import oggm.utils
 import matplotlib.pyplot as plt
-
 
 
 cfg.initialize()
@@ -130,53 +128,14 @@ def mean_d(data, ref):
         abs_diff = np.abs(diff)
         return np.sum(abs_diff) / (data.size * ref.size)
 
-# figure 1  ---------------
-Plot_fig_1 = True
-
-if Plot_fig_1:
-
-    rcParams['axes.labelsize'] = 20
-    rcParams['xtick.labelsize'] = 20
-    rcParams['ytick.labelsize'] = 20
-    f = plt.figure(figsize=(14, 12))
-    from mpl_toolkits.axes_grid1 import ImageGrid
-
-    axs = ImageGrid(f, 111,  # as in plt.subplot(111)
-                    nrows_ncols=(1, 2),
-                    axes_pad=0.15,
-                    share_all=True,
-                    cbar_location="right",
-                    cbar_mode="edge",
-                    cbar_size="7%",
-                    cbar_pad=0.15,
-                    )
-
-    llkw = {'interval': 0}
-    letkm = dict(color='black', ha='left', va='top', fontsize=20,
-                 bbox=dict(facecolor='white', edgecolor='black'))
-
-    graphics.plot_centerlines(gdir, ax=axs[0], title='', add_colorbar=True,
-                                    lonlat_contours_kwargs=llkw,
-                                    cbar_ax=axs[0].cax, add_scalebar=False)
-    xt, yt = 2.45, 2.45
-    axs[0].text(xt, yt, 'a', **letkm)
-
-    graphics.plot_catchment_width(gdir, ax=axs[1], title='', corrected=True,
-                                   add_colorbar=False,
-                                   lonlat_contours_kwargs=llkw,
-                                   add_scalebar=True)
-    axs[1].text(xt, yt, 'b', **letkm)
-
-    plt.tight_layout()
-    #plt.show()
-    plt.savefig(os.path.join(plot_path,'workflow_columbia.pdf'),
-                             dpi=150, bbox_inches='tight')
-
-
 # figure 2  ---------------
 Plot_fig_2 = True
 
 if Plot_fig_2:
+
+    rcParams['axes.labelsize'] = 20
+    rcParams['xtick.labelsize'] = 20
+    rcParams['ytick.labelsize'] = 20
 
     f = plt.figure(figsize=(14, 12))
     from mpl_toolkits.axes_grid1 import ImageGrid
@@ -220,7 +179,6 @@ if Plot_fig_2:
 Plot_fig_3 = True
 
 if Plot_fig_3:
-
     #Load McNabb et al. 2012 bed for the Columbia Glacier
     path_ele = os.path.join(MAIN_PATH, 'input_data/mcnabb.csv')
     thick07 = pd.read_csv(path_ele)

@@ -66,8 +66,8 @@ obs = np.repeat(15.11 * 1.091, len(k))
 #From the find_intercepts scripts we copy
 m3 = 0.0
 b3 = 16.48501
-k1 = 0.62958
-k2 = 0.66479
+k1 = 0.63208
+k2 = 0.6659
 
 my_labels_k = {"x1": "A = OGGM default, fs = 0.0",
                "x2": "A = OGGM default, fs = OGGM default"}
@@ -130,10 +130,10 @@ data_frame2_A = cf2_A.T
 data_frame3_A = cf3_A.T
 
 #From find_intercepts.py we copy
-glen_0 = 2.400069701850777e-24
-glen_1 = 2.7178992962449867e-24
-glen_2 = 2.0991333890664777e-24
-glen_3 = 2.398751169234637e-24
+glen_0 = 2.4057015372011198e-24
+glen_1 = 2.70310265604804e-24
+glen_2 = 2.1148709491675595e-24
+glen_3 = 2.4018556703316452e-24
 
 my_labels_glena = {"x0": "fs = 0.0, " + 'k1 = '+ str(round(k1, 2)),
                    "x1": "fs = 0.0, " + 'k2 = '+ str(round(k2, 2)),
@@ -154,8 +154,7 @@ filenames_fs.append(sorted(glob.glob(WORKING_DIR_one_fs)))
 filenames_fs.append(sorted(glob.glob(WORKING_DIR_two_fs)))
 
 # Glen_a array or FS
-fsfactors = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5,
-             0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2]
+fsfactors = np.arange(0.00,3.00,0.10)
 fs = np.asarray(fsfactors)*5.7e-20
 
 calvings_fs = []

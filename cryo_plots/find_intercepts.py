@@ -93,6 +93,7 @@ print('lower', data_frame2[data_frame2['calving_flux'] < obs[0]].index.values)
 print('equal', data_frame2[data_frame2['calving_flux'] == obs[0]].index.values)
 print('bigger', data_frame2[data_frame2['calving_flux'] > obs[0]].index.values)
 
+
 #Defining the points
 points_k1 = np.asarray([k[8], data_frame1.iloc[8]['calving_flux'],
           k[9], data_frame1.iloc[9]['calving_flux']])
@@ -184,6 +185,8 @@ letkm = dict(color='black', ha='left', va='top', fontsize=20,
 
 plt.margins(0.05)
 plt.show()
+# plt.savefig(os.path.join(plot_path, 'sensitivity_Alaska.pdf'), dpi=150,
+#                       bbox_inches='tight')
 
 
 ################### reading Glen A exp ##########################################
@@ -294,11 +297,11 @@ points_glena_0 = np.asarray([glen_a[20], data_frame0_A.iloc[20]['calving_flux'],
 points_glena_1 = np.asarray([glen_a[26], data_frame1_A.iloc[26]['calving_flux'],
           glen_a[27], data_frame1_A.iloc[27]['calving_flux']])
 
-points_glena_2 = np.asarray([glen_a[13], data_frame2_A.iloc[13]['calving_flux'],
-          glen_a[14], data_frame2_A.iloc[14]['calving_flux']])
+points_glena_2 = np.asarray([glen_a[14], data_frame2_A.iloc[14]['calving_flux'],
+          glen_a[15], data_frame2_A.iloc[15]['calving_flux']])
 
-points_glena_3 = np.asarray([glen_a[19], data_frame3_A.iloc[19]['calving_flux'],
-          glen_a[20], data_frame3_A.iloc[20]['calving_flux']])
+points_glena_3 = np.asarray([glen_a[20], data_frame3_A.iloc[20]['calving_flux'],
+          glen_a[21], data_frame3_A.iloc[21]['calving_flux']])
 
 points_glena_obs = np.asanyarray([glen_a[0], obs[0],
           glen_a[1], obs[1]])

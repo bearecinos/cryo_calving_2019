@@ -162,8 +162,7 @@ for gdir in gdirs:
             inversion.find_inversion_calving(gdir)
         else:
             inversion.find_inversion_calving(gdir,
-                                              initial_water_depth = w_depth,
-                                              fixed_water_depth = True)
+                                              fixed_water_depth= w_depth)
     else:
         inversion.find_inversion_calving(gdir)
 
