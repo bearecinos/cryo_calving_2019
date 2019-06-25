@@ -6,8 +6,7 @@ results of
 the paper submitted to The Cryosphere Disscus: 
 [Recinos, et al,. in review](https://doi.org/10.5194/tc-2018-254)
 
-This repository uses a OGGM version V1.1 pinned here: 
-https://github.com/OGGM/oggm/releases/tag/v1.1
+This repository uses a OGGM version pinned to the following [commit.](https://github.com/OGGM/oggm/commit/8ff54d5d0a3549a1e94ec31d246094f7dbd80c1e)
 
 The content of the repository is the following: 
 
