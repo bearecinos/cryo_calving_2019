@@ -93,7 +93,7 @@ log.info('Number of glaciers: {}'.format(len(rgidf)))
 # -----------------------------------
 gdirs = workflow.init_glacier_regions(rgidf)
 
-factors = np.arange(0.00,3.00,0.10)
+factors = np.arange(0.00,50.00,5)
 
 if RUN_GIS_mask:
     execute_entity_task(tasks.glacier_masks, gdirs)
