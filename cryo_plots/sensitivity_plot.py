@@ -154,7 +154,7 @@ filenames_fs.append(sorted(glob.glob(WORKING_DIR_one_fs)))
 filenames_fs.append(sorted(glob.glob(WORKING_DIR_two_fs)))
 
 # Glen_a array or FS
-fsfactors = np.arange(0.00,3.00,0.10)
+fsfactors = np.arange(0.00,50.00,5)
 fs = np.asarray(fsfactors)*5.7e-20
 
 calvings_fs = []
@@ -289,17 +289,17 @@ ax3.tick_params(axis='both', bottom=True, left=True, width=2, direction='out', l
 sns.set_color_codes("colorblind")
 sns.set_style("white")
 
-plt.plot(fs, data_frame1_fs,
+plt.plot(fs[:-2], data_frame1_fs[:-2],
          label=my_labels_fs["x1"], linewidth=2.5)
 
-plt.plot(fs, data_frame2_fs,
+plt.plot(fs[:-2], data_frame2_fs[:-2],
          label=my_labels_fs["x2"], linewidth=2.5)
 
-plt.plot(fs, np.repeat(15.11 * 1.091, len(fs)), '--', color='black',
+plt.plot(fs[:-2], np.repeat(15.11 * 1.091, len(fs[:-2])), '--', color='black',
          label='Frontal ablation (McNabb et al., 2015)', linewidth=3.0)
 
-plt.fill_between(fs,np.repeat(15.11*1.091-3.96, len(fs)),
-                 np.repeat(15.11*1.091+3.96, len(fs)),
+plt.fill_between(fs[:-2],np.repeat(15.11*1.091-3.96, len(fs[:-2])),
+                 np.repeat(15.11*1.091+3.96, len(fs[:-2])),
                  color=sns.xkcd_rgb["grey"], alpha=0.3)
 
 plt.gca().axes.get_xaxis().set_visible(True)
