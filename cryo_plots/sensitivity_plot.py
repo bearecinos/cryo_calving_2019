@@ -61,13 +61,18 @@ data_frame1 = cf1.T
 data_frame2 = cf2.T
 
 #Observations
+#Observations
+lw_bound = np.repeat(15.11 * 1.091-3.96, len(k))
 obs = np.repeat(15.11 * 1.091, len(k))
+up_bound= np.repeat(15.11 * 1.091+3.96, len(k))
 
 #From the find_intercepts scripts we copy
 m3 = 0.0
 b3 = 16.48501
 k1 = 0.63208
 k2 = 0.6659
+k1_low = 0.50369
+k2_up = 0.81968
 
 my_labels_k = {"x1": "A = OGGM default, fs = 0.0",
                "x2": "A = OGGM default, fs = OGGM default"}
@@ -93,7 +98,7 @@ filenames_A.append(sorted(glob.glob(WORKING_DIR_two_A)))
 filenames_A.append(sorted(glob.glob(WORKING_DIR_three_A)))
 
 # Glen_a array
-factors = np.arange(0.6,2.0,0.02)
+factors = np.arange(0.5,2.0,0.02)
 glen_a = np.asarray(factors)*2.4e-24
 
 calvings_A = []
@@ -134,6 +139,9 @@ glen_0 = 2.4057015372011198e-24
 glen_1 = 2.70310265604804e-24
 glen_2 = 2.1148709491675595e-24
 glen_3 = 2.4018556703316452e-24
+
+glena_low = 4.6710383205133994e-24
+glena_up = 1.2954387147693303e-24
 
 my_labels_glena = {"x0": "fs = 0.0, " + 'k1 = '+ str(round(k1, 2)),
                    "x1": "fs = 0.0, " + 'k2 = '+ str(round(k2, 2)),
@@ -184,7 +192,7 @@ data_frame2_fs = cf2_fs.T
 my_labels_fs = {"x1": "A = OGGM default, " + 'k1 = '+ str(round(k1, 2)),
                 "x2": "A = OGGM default, " 'k2 = '+ str(round(k2, 2))}
 
-
+fs_low = 2.598522451128765e-19
 ######################################## plot ######################################
 # Plot settings
 rcParams['axes.labelsize'] = 20
@@ -221,6 +229,13 @@ plt.plot(k2, obs[0], 'x', markersize=12,
          color=sns.xkcd_rgb["teal green"], linewidth=4,
          label='k2 = '+ str(round(k2, 2)))
 
+plt.plot(k1_low, lw_bound[0], 'x', markersize=12,
+         color=sns.xkcd_rgb["black"], linewidth=5)
+         #label='k1 = '+ str(round(k1, 2)))
+
+plt.plot(k2_up, up_bound[0], 'x', markersize=12,
+         color=sns.xkcd_rgb["black"], linewidth=5)
+
 plt.plot(k, b3 + m3*k, '--', color='black', linewidth=3.0,
         label='Frontal ablation (McNabb et al., 2015)')
 plt.fill_between(k, (b3 + m3*k) - 3.96, (b3 + m3*k) + 3.96,
@@ -254,16 +269,23 @@ plt.plot(glen_a, data_frame3_A,
              label=my_labels_glena["x3"], linewidth=2.5)
 
 
-# plt.plot(glena_0, obs[0], 'x', markersize=20, linewidth=4)
-#
-# plt.plot(glena_1, obs[0], 'x', markersize=20,
-#          linewidth=4)
-#
-# plt.plot(glena_2, obs[0], 'x', markersize=20,
-#          linewidth=4)
-#
-# plt.plot(glena_3, obs[0], 'x', markersize=20,
-#          linewidth=4)
+plt.plot(glen_0, obs[0], 'x',
+         markersize=20, linewidth=4, color=sns.xkcd_rgb["ocean blue"])
+
+plt.plot(glen_1, obs[0], 'x',
+         markersize=20, linewidth=4, color=sns.xkcd_rgb["orange"])
+
+plt.plot(glen_2, obs[0], 'x',
+         markersize=20, linewidth=4, color=sns.xkcd_rgb["green"])
+
+plt.plot(glen_3, obs[0], 'x',
+         markersize=20, linewidth=4, color=sns.xkcd_rgb["red"])
+
+plt.plot(glena_low, lw_bound[0], 'x',
+         markersize=20, linewidth=5, color=sns.xkcd_rgb["black"])
+
+plt.plot(glena_up, up_bound[0], 'x',
+         markersize=20, linewidth=5, color=sns.xkcd_rgb["black"])
 
 plt.plot(glen_a, np.repeat(15.11*1.091, len(glen_a)), '--', color='black',
              label='Frontal ablation (McNabb et al., 2015)', linewidth=3.0)
@@ -298,6 +320,9 @@ plt.plot(fs[:-2], data_frame2_fs[:-2],
 plt.plot(fs[:-2], np.repeat(15.11 * 1.091, len(fs[:-2])), '--', color='black',
          label='Frontal ablation (McNabb et al., 2015)', linewidth=3.0)
 
+plt.plot(fs_low, lw_bound[0], 'x',
+         markersize=20, linewidth=5, color=sns.xkcd_rgb["black"])
+
 plt.fill_between(fs[:-2],np.repeat(15.11*1.091-3.96, len(fs[:-2])),
                  np.repeat(15.11*1.091+3.96, len(fs[:-2])),
                  color=sns.xkcd_rgb["grey"], alpha=0.3)
@@ -317,5 +342,5 @@ plt.subplots_adjust(hspace=0.2)
 plt.tight_layout()
 #plt.show()
 
-plt.savefig(os.path.join(plot_path, 'sensitivity.pdf'), dpi=150,
+plt.savefig(os.path.join(plot_path, 'sensitivity_draft.pdf'), dpi=150,
                       bbox_inches='tight')

@@ -1,5 +1,4 @@
-# This will run glen_a x factors experiment only for MT
-# This script needs the Columbia glacier pre-processing output
+# This will run OGGM on the Alaska Region without calving
 from __future__ import division
 
 # Module logger
@@ -9,7 +8,6 @@ log = logging.getLogger(__name__)
 # Python imports
 import os
 import geopandas as gpd
-import numpy as np
 import shutil
 
 # Locals
@@ -19,6 +17,7 @@ from oggm import tasks
 from oggm.workflow import execute_entity_task
 from oggm import utils
 from oggm.core import inversion
+import pandas as pd
 
 # Time
 import time
@@ -34,13 +33,14 @@ cfg.initialize()
 rgi_version = '6'
 
 SLURM_WORKDIR = os.environ["WORKDIR"]
+
 # Local paths (where to write output and where to download input)
 WORKING_DIR = SLURM_WORKDIR
 
 MAIN_PATH = os.path.expanduser('~/cryo_calving_2019/')
 
 RGI_FILE = os.path.join(MAIN_PATH,
-                    'input_data/01_rgi60_Alaska_modify/01_rgi60_Alaska.shp')
+                        'input_data/01_rgi60_Alaska_modify/01_rgi60_Alaska.shp')
 
 Columbia_prepro = os.path.join(MAIN_PATH,
           'output_data/1_Columbia_Glacier_runs/1_preprocessing/per_glacier/')
@@ -48,19 +48,25 @@ Columbia_prepro = os.path.join(MAIN_PATH,
 Columbia_dir = os.path.join(Columbia_prepro,
                             'RGI60-01/RGI60-01.10/RGI60-01.10689')
 
-# Configuration settings
+config_file_path = os.path.join(MAIN_PATH, 'input_data/configurations.csv')
+cfgs = pd.read_csv(config_file_path, index_col='config')
+cfg_params = cfgs.loc[11]
+
 cfg.PATHS['working_dir'] = WORKING_DIR
 # Use multiprocessing
 cfg.PARAMS['use_multiprocessing'] = True
 cfg.PARAMS['use_intersects'] = True
-# We keep a border of 20
+
+# We make the border 20
 cfg.PARAMS['border'] = 20
 # Set to False for operating the calving loop
 cfg.PARAMS['continue_on_error'] = False
-
-# We want sliding or not
-cfg.PARAMS['inversion_fs'] = 0.0
 cfg.PARAMS['use_tar_shapefiles'] = False
+
+# Inversion and calving configuration
+cfg.PARAMS['inversion_fs'] = cfg_params.fs
+cfg.PARAMS['k_calving'] = cfg_params.k_calving
+cfg.PARAMS['inversion_glen_a'] = cfg_params.glen_a
 
 # We use intersects
 path = utils.get_rgi_intersects_region_file(rgi_region, version=rgi_version)
@@ -77,8 +83,8 @@ print('CRU file: ' + p)
 
 # Some globals for more control on what to run
 RUN_GIS_mask = True
-RUN_GIS_PREPRO = True  # run GIS pre-processing tasks (before climate)
-RUN_CLIMATE_PREPRO = True  # run climate pre-processing tasks
+RUN_GIS_PREPRO = True # run GIS pre-processing tasks (before climate)
+RUN_CLIMATE_PREPRO = True # run climate pre-processing tasks
 RUN_INVERSION = True  # run bed inversion
 
 # Run only for Marine terminating
@@ -86,6 +92,7 @@ glac_type = [0, 2]
 keep_glactype = [(i not in glac_type) for i in rgidf.TermType]
 rgidf = rgidf.iloc[keep_glactype]
 
+# Sort for more efficient parallel computing
 rgidf = rgidf.sort_values('Area', ascending=False)
 
 log.info('Starting run for RGI reg: ' + rgi_region)
@@ -95,14 +102,12 @@ log.info('Number of glaciers: {}'.format(len(rgidf)))
 # -----------------------------------
 gdirs = workflow.init_glacier_regions(rgidf)
 
-factors = np.arange(0.5,2.0,0.02)
-
 if RUN_GIS_mask:
     execute_entity_task(tasks.glacier_masks, gdirs)
 
 #We copy Columbia glacier dir with the itmix dem
 shutil.rmtree(os.path.join(WORKING_DIR,
-                            'per_glacier/RGI60-01/RGI60-01.10/RGI60-01.10689'))
+                           'per_glacier/RGI60-01/RGI60-01.10/RGI60-01.10689'))
 shutil.copytree(Columbia_dir, os.path.join(WORKING_DIR,
                             'per_glacier/RGI60-01/RGI60-01.10/RGI60-01.10689'))
 
@@ -128,32 +133,29 @@ if RUN_CLIMATE_PREPRO:
     execute_entity_task(tasks.local_t_star, gdirs)
     execute_entity_task(tasks.mu_star_calibration, gdirs)
 
-for f in factors:
-    suf = '_k2_cfgAxfactors_fs_zero_' + '%.2f' % f
+if RUN_INVERSION:
+    # Inversion tasks
+    execute_entity_task(tasks.prepare_for_inversion, gdirs,
+                        add_debug_var=True)
+    execute_entity_task(tasks.mass_conservation_inversion, gdirs)
 
-    cfg.PARAMS['inversion_glen_a'] = 2.4e-24*f
-    cfg.PARAMS['k_calving'] = 0.6659
+# Log
+m, s = divmod(time.time() - start, 60)
+h, m = divmod(m, 60)
+log.info("OGGM no_calving is done! Time needed: %02d:%02d:%02d" % (h, m, s))
 
-    if RUN_INVERSION:
-        # Inversion tasks
-        execute_entity_task(tasks.prepare_for_inversion, gdirs,
-                            add_debug_var=True)
-        execute_entity_task(tasks.mass_conservation_inversion, gdirs)
+suf = 'config_11_'
 
-    # Log
-    m, s = divmod(time.time() - start, 60)
-    h, m = divmod(m, 60)
-    log.info("OGGM without calving is done! Time needed: %02d:%02d:%02d" %
-             (h, m, s))
+# Compute calving per k factor
+for gdir in gdirs:
+    forwrite = []
+    # Find a calving flux.
+    inversion.find_inversion_calving(gdir)
 
-    # Compute calving per k factor
-    for gdir in gdirs:
-        forwrite = []
-        # Selecting the tidewater glaciers on the region
-        if gdir.terminus_type == 'Marine-terminating':
-            # Find a calving flux.
-            inversion.find_inversion_calving(gdir)
+# Compile output
+utils.compile_glacier_statistics(gdirs, filesuffix='_with_calving_' + suf)
 
-    # Compile output
-    utils.compile_glacier_statistics(gdirs, filesuffix='_with_calving_' + suf,
-                                     inversion_only=True)
+# Log
+m, s = divmod(time.time() - start, 60)
+h, m = divmod(m, 60)
+log.info("OGGM with calving is done! Time needed: %02d:%02d:%02d" % (h, m, s))

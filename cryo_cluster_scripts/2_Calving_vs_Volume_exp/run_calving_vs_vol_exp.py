@@ -26,6 +26,7 @@ from oggm import workflow
 from oggm import tasks
 from oggm.workflow import execute_entity_task
 from oggm import utils
+from oggm.core.climate import mb_yearly_climate_on_height
 
 # Time
 import time
@@ -86,8 +87,8 @@ print('CRU file: ' + p)
 RUN_GIS_mask = True
 RUN_GIS_PREPRO = True # run GIS pre-processing tasks (before climate)
 RUN_CLIMATE_PREPRO = True # run climate pre-processing tasks
-RUN_INVERSION = True  # run bed inversion
-With_calving = True
+RUN_INVERSION = True # run bed inversion
+With_calving = False
 
 # Run only for Lake Terminating and Marine Terminating
 glac_type = [0]
@@ -143,58 +144,90 @@ if RUN_INVERSION:
     execute_entity_task(tasks.mass_conservation_inversion, gdirs,
                         fs = cfg.PARAMS['inversion_fs'])
 
-if With_calving:
-    # Re-initializing climate tasks and inversion without calving to be sure
-    for gdir in gdirs:
-        gdir.inversion_calving_rate = 0
+# Compile output
+#utils.compile_glacier_statistics(gdirs, filesuffix='_tw_alaska_no_calving_with_sliding_')
+#utils.compile_climate_statistics(gdirs, filesuffix='_tw_alaska_')
 
-    execute_entity_task(tasks.local_t_star, gdirs)
-    execute_entity_task(tasks.mu_star_calibration, gdirs)
-    execute_entity_task(tasks.prepare_for_inversion, gdirs, add_debug_var=True)
-    execute_entity_task(tasks.mass_conservation_inversion, gdirs,
-                        fs = cfg.PARAMS['inversion_fs'])
+prcp_t = []
+ids = []
 
-    for gdir in gdirs:
-        if gdir.is_tidewater:
+for gdir in gdirs:
 
-            cfg.PARAMS['clip_mu_star'] = True
-            cfg.PARAMS['min_mu_star'] = 0.0
+    #Get the total precipitation of the glacier to store it later
+    heights, widths = gdir.get_inversion_flowline_hw()
 
-            cl = gdir.read_pickle('inversion_output')[-1]
-            assert cl['volume'][-1] == 0.
+    df = gdir.read_json('local_mustar')
+    tstar = df['t_star']
+    mu_hp = int(cfg.PARAMS['mu_star_halfperiod'])
+    yr = [tstar - mu_hp, tstar + mu_hp]
 
-            volumes = []
-            all_mus = []
+    years, temp, prcp = mb_yearly_climate_on_height(gdir, heights,
+                                                    year_range=yr,
+                                                    flatten=False)
+    prcp_avg = np.average(prcp, axis=1)
 
-            data_calving = np.arange(0, 5, 0.2)
+    # compute the area of each section
+    fls = gdir.read_pickle('inversion_flowlines')
+    area_sec = widths * fls[0].dx * gdir.grid.dx
 
-            for j, c in enumerate(data_calving):
-                gdir.inversion_calving_rate = c
+    prcpsol = np.sum(prcp_avg * area_sec)
 
-                # Recompute mu with calving
-                tasks.local_t_star(gdir)
-                execute_entity_task(tasks.mu_star_calibration, gdirs)
-                tasks.prepare_for_inversion(gdir, add_debug_var=True)
-                tasks.mass_conservation_inversion(gdir,
-                                               fs = cfg.PARAMS['inversion_fs'])
+    rho = cfg.PARAMS['ice_density']
 
-                df = gdir.read_json('local_mustar')
-                mu_star = df['mu_star_glacierwide']
+    # We will save this!
+    accu_ice = (prcpsol * 1e-9) / rho
 
-                vol = []
-                cl = gdir.read_pickle('inversion_output')
-                for c in cl:
-                    vol.extend(c['volume'])
-                vol = np.nansum(vol) * 1e-9
+    gdir.inversion_calving_rate = 0
 
-                volumes.append(vol)
-                all_mus = np.append(all_mus, mu_star)
+    cfg.PARAMS['clip_mu_star'] = True
+    cfg.PARAMS['min_mu_star'] = 0.0
 
-            print(volumes, data_calving)
-            print(len(volumes), len(data_calving))
+    cl = gdir.read_pickle('inversion_output')[-1]
+    assert cl['volume'][-1] == 0.
 
-            d = {'calving_flux': data_calving, 'volume': volumes,
-                 'mu_star': all_mus}
-            df = pd.DataFrame(data=d)
-            df.to_csv(os.path.join(cfg.PATHS['working_dir'],
-                              'sensitivity_calvsvol' + gdir.rgi_id + '.csv'))
+    volumes = []
+    all_mus = []
+
+    data_calving = data_calving = np.arange(0, 5, 0.2)
+
+    for j, c in enumerate(data_calving):
+        gdir.inversion_calving_rate = c
+
+        # Recompute mu with calving
+        tasks.local_t_star(gdir)
+        execute_entity_task(tasks.mu_star_calibration, gdirs)
+        tasks.prepare_for_inversion(gdir, add_debug_var=True)
+        tasks.mass_conservation_inversion(gdir,
+                                          fs=cfg.PARAMS['inversion_fs'])
+
+        df = gdir.read_json('local_mustar')
+        mu_star = df['mu_star_glacierwide']
+
+        vol = []
+        cl = gdir.read_pickle('inversion_output')
+        for c in cl:
+            vol.extend(c['volume'])
+        vol = np.nansum(vol) * 1e-9
+
+        volumes.append(vol)
+        all_mus = np.append(all_mus, mu_star)
+
+    print(volumes, data_calving)
+    print(len(volumes), len(data_calving))
+
+    d = {'calving_flux': data_calving, 'volume': volumes,
+         'mu_star': all_mus}
+    df = pd.DataFrame(data=d)
+    df.to_csv(os.path.join(cfg.PATHS['working_dir'],
+                           'sensitivity_calvsvol' + gdir.rgi_id + '.csv'))
+
+    #Storing the precipitation per glacier in a different file
+    prcp_t = np.append(prcp_t, accu_ice)
+    ids = np.append(ids, gdir.rgi_id)
+
+d_2 = {'RGI_ID': ids,
+     'precp': prcp_t}
+#
+df_2 = pd.DataFrame(data=d_2)
+df_2.to_csv(os.path.join(cfg.PATHS['working_dir'],
+                               'precipitation_calving_glaciers'+'.csv'))

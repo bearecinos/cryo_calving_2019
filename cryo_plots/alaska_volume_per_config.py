@@ -94,9 +94,11 @@ for path, subdirs, files in os.walk(output_dir_path, topdown=True):
 # print(full_exp_name[0:8])
 volume_no_calving = []
 exp_name = []
-exp_number = [1, 2, 3, 4, 5, 6, 7, 8]
+exp_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 
-for f in full_exp_name[0:8]:
+#print(full_exp_name[0:13])
+
+for f in full_exp_name[0:13]:
     volume, tails, basedir = read_experiment_file(f)
     volume_no_calving += [np.around(volume,2)]
     exp_name += [basedir]
@@ -113,9 +115,10 @@ print('Volume before calving SLE', volume_no_calving_sle)
 #print(full_exp_name[8:len(full_exp_name)])
 volume_calving = []
 exp_name_c = []
-exp_number_c = [1, 2, 3, 4, 5, 6, 7, 8]
+exp_number_c = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 
-for f in full_exp_name[8:len(full_exp_name)]:
+
+for f in full_exp_name[13:len(full_exp_name)]:
     volume, tails, basedir= read_experiment_file(f)
     volume_calving += [np.around(volume,2)]
     exp_name_c += [basedir]
@@ -178,7 +181,6 @@ print('Percentage', percentage)
 print('Percent for columbia', calculate_volume_percentage(270.40, 349.39))
 print('Gt equivalent columbia', 2.98161468959857/1.091)
 
-
 d = {'Experiment No': exp_number,
      'Volume no calving in s.l.e': volume_no_calving_sle,
      'Volume no calving bsl in s.l.e': vbsl_sle,
@@ -214,6 +216,7 @@ print('TABLE',ds)
 
 print('is vbsl bigger than differnces', vbsl_c > ds['Volume differences in km3'].values)
 
+
 # Plot settings
 # Set figure width and height in cm
 width_cm = 12
@@ -246,20 +249,41 @@ bars4 = ds['Volume with calving in km3'].values
 sns.set_color_codes()
 sns.set_color_codes("colorblind")
 
-p1 = ax1.barh(ind, bars1*-1,
+p1 = ax1.barh(ind[0:8], bars1[0:8]*-1,
               color="indianred", edgecolor="white", height=graph_width)
-p2 = ax1.barh(ind, bars2, height=graph_width, edgecolor="white")
 
-p3 = ax1.barh(ind - graph_width, bars3*-1,
+p1_extra = ax1.barh(ind[8:13], bars1[8:13]*-1,
+              color="indianred", edgecolor="white", height=graph_width,
+                    alpha=0.7)
+
+p2 = ax1.barh(ind[0:8], bars2[0:8], color=sns.xkcd_rgb["ocean blue"],
+              height=graph_width, edgecolor="white")
+
+p2_extra = ax1.barh(ind[8:13], bars2[8:13], color=sns.xkcd_rgb["ocean blue"],
+                    height=graph_width, edgecolor="white",
+                    alpha=0.7)
+
+p3 = ax1.barh(ind[0:8] - graph_width, bars3[0:8]*-1,
               color="indianred",edgecolor="white", height=graph_width)
-p4 = ax1.barh(ind - graph_width, bars4, color=sns.xkcd_rgb["teal green"], edgecolor="white",
+
+p3_extra = ax1.barh(ind[8:13] - graph_width, bars3[8:13]*-1,
+              color="indianred", edgecolor="white", alpha=0.7,
+                    height=graph_width)
+
+p4 = ax1.barh(ind[0:8] - graph_width, bars4[0:8], color=sns.xkcd_rgb["teal green"],
+              edgecolor="white",
               height=graph_width)
+
+p4_extra = ax1.barh(ind[8:13] - graph_width, bars4[8:13], color=sns.xkcd_rgb["teal green"],
+              edgecolor="white", alpha=0.7,
+              height=graph_width)
+
 
 
 ax1.set_xticks([-1000, 0, 1000, 2000, 3000, 4000, 5000])
 ax1.set_xticklabels(abs(ax1.get_xticks()), fontsize=20)
 ax2.set_xlim(ax1.get_xlim())
-ax2.tick_params('Volume [mm SLE]', fontsize=20)
+#ax2.tick_params('Volume [mm SLE]', fontsize=20)
 ax2.set_xticks(ax1.get_xticks())
 array = ax1.get_xticks()
 #print(array)

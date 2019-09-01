@@ -129,7 +129,7 @@ def mean_d(data, ref):
         return np.sum(abs_diff) / (data.size * ref.size)
 
 # figure 2  ---------------
-Plot_fig_2 = True
+Plot_fig_2 = False
 
 if Plot_fig_2:
 
@@ -183,6 +183,10 @@ if Plot_fig_3:
     path_ele = os.path.join(MAIN_PATH, 'input_data/mcnabb.csv')
     thick07 = pd.read_csv(path_ele)
     thick07_h = thick07['bed07']
+    farinotti = thick07['farinotti']
+    model_1 = thick07['model_1']
+    model_2 = thick07['model_2']
+    model_3 = thick07['model_3']
 
     map_dx = gdir.grid.dx
 
@@ -204,6 +208,11 @@ if Plot_fig_3:
     vol_c = inv_c['volume']
     bed_c = surface - thick_c
 
+    bed_f = surface - farinotti
+    bed_model_1 = surface - model_1
+    bed_model_2 = surface - model_2
+    bed_model_3 = surface - model_3
+
     # Plotting
 
     rcParams['axes.labelsize'] = 15
@@ -219,7 +228,21 @@ if Plot_fig_3:
     ax.plot(x, bed_c, color='k', linewidth=2.5, label = 'Bed with frontal ablation')
     ax.plot(x, surface, color='r', linewidth=2.5, label = 'Glacier surface')
     ax.plot(x, thick07_h, color='green', linestyle=':', linewidth=2.5,
-            label='Calculated glacier bed 2007 (McNabb et al, 2012)')
+            label='2007 bed (McNabb et al., 2012)')
+
+    ax.plot(x, bed_f, color='orange', alpha=0.5, linewidth=2.5,
+            label = 'Bed from the composite solution (Farinotti et al., 2019)')
+
+    # ax.plot(x, bed_model_1, color='purple', alpha=0.5, linewidth=2.5,
+    #         label='Huss and Farinotti, (2012)')
+    #
+    # ax.plot(x, bed_model_2, color='pink', alpha=0.5, linewidth=2.5,
+    #         label='Frey et al. (2014)')
+    #
+    # ax.plot(x, bed_model_3, color='cyan', alpha=0.5, linewidth=2.5,
+    #         label='Maussion et al. (2018)')
+
+
     ax.axhline(y=0, color='navy', linewidth=2.5, label= 'Sea level')
     ax.legend(loc='upper right')
     ax.set_xlabel('Distance along flowline [km]')

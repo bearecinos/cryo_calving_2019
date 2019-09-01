@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 #SBATCH --job-name=config_runs
+#SBATCH --partition=high
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=14
 #SBATCH --time=24:00:00

@@ -2,6 +2,7 @@
 #
 #SBATCH --job-name=calving_vs_volume
 #SBATCH --ntasks=1
+#SBATCH --partition=high
 #SBATCH --cpus-per-task=14
 #SBATCH --time=24:00:00
 #SBATCH --mail-user=recinos@uni-bremen.de
@@ -45,7 +46,7 @@ OUTDIR="$HOME/cryo_calving_2019/output_data/2_Calving_vs_Volume_exp/"
 mkdir -p "$OUTDIR"
 
 # Copy any neccesary result data.
-cp -R "${WORKDIR}/sensitivity_calvsvol"*.csv "${OUTDIR}/"
+cp -R "${WORKDIR}/"*.csv "${OUTDIR}/"
 # cp -R "${WORKDIR}"/* "${OUTDIR}/"
 
 # Print a final message so you can actually see it being done in the output log.

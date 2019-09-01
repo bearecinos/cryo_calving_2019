@@ -17,6 +17,7 @@ from oggm import tasks
 from oggm.workflow import execute_entity_task
 from oggm import utils
 from oggm.core import inversion
+import pandas as pd
 
 # Time
 import time
@@ -47,6 +48,9 @@ Columbia_prepro = os.path.join(MAIN_PATH,
 Columbia_dir = os.path.join(Columbia_prepro,
                             'RGI60-01/RGI60-01.10/RGI60-01.10689')
 
+config_file_path = os.path.join(MAIN_PATH, 'input_data/configurations.csv')
+cfgs = pd.read_csv(config_file_path, index_col='config')
+cfg_params = cfgs.loc[6]
 
 cfg.PATHS['working_dir'] = WORKING_DIR
 # Use multiprocessing
@@ -60,9 +64,9 @@ cfg.PARAMS['continue_on_error'] = False
 cfg.PARAMS['use_tar_shapefiles'] = False
 
 # Inversion and calving configuration
-cfg.PARAMS['inversion_fs'] = 0.0
-cfg.PARAMS['k_calving'] = 0.6659
-cfg.PARAMS['inversion_glen_a'] = 2.70310e-24
+cfg.PARAMS['inversion_fs'] = cfg_params.fs
+cfg.PARAMS['k_calving'] = cfg_params.k_calving
+cfg.PARAMS['inversion_glen_a'] = cfg_params.glen_a
 
 # We use intersects
 path = utils.get_rgi_intersects_region_file(rgi_region, version=rgi_version)

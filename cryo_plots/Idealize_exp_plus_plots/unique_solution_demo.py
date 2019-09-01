@@ -44,7 +44,7 @@ ds = []
 for thick in np.linspace(0, 500, 51):
     # This function simply computes the calving law
     out = inversion.calving_flux_from_depth(gdir, thick=thick)
-    out['Thick (Calving law)'] = out.pop('thick')
+    out['Calving law'] = out.pop('thick')
 
     # Now we feed it back to OGGM
     gdir.inversion_calving_rate = out['flux']
@@ -56,11 +56,11 @@ for thick in np.linspace(0, 500, 51):
     v_inv, _ = tasks.mass_conservation_inversion(gdir)
 
     # Now we get the OGGM ice thickness
-    out['Thick (OGGM)'] = inversion.calving_flux_from_depth(gdir)['thick']
+    out['OGGM'] = inversion.calving_flux_from_depth(gdir)['thick']
 
     # Add sliding (the fs value is outdated, but still)
     v_inv, _ = tasks.mass_conservation_inversion(gdir, fs=5.7e-20)
-    out['Thick (OGGM with sliding)'] = inversion.calving_flux_from_depth(gdir)['thick']
+    out['OGGM with sliding'] = inversion.calving_flux_from_depth(gdir)['thick']
 
     # Store
     ds.append(out)
@@ -101,8 +101,8 @@ for w in wd:
 
 dg = pd.DataFrame(list(zip(wd, out, out_fs)),
                   columns=['Water depth [m]',
-                           'OGGM - Calving law',
-                           'OGGM (with sliding) - Calving law'])
+                           'Calving law - OGGM',
+                           'Calving law - OGGM (with sliding)'])
 
 print(len(ds))
 
@@ -143,13 +143,13 @@ sns.set_style("white")
 
 f2_ax2.tick_params(axis='both', bottom=True, left=True, width=2,
                    direction='out', length=5)
-plt.plot(ds['flux'], ds['Thick (Calving law)'],
+plt.plot(ds['flux'], ds['Calving law'],
          color=sns.xkcd_rgb["ocean blue"],
          linewidth=2.5)
-plt.plot(ds['flux'], ds['Thick (OGGM)'],
+plt.plot(ds['flux'], ds['OGGM'],
          sns.xkcd_rgb["burnt orange"],
          linewidth=2.5)
-plt.plot(ds['flux'], ds['Thick (OGGM with sliding)'],
+plt.plot(ds['flux'], ds['OGGM with sliding'],
          sns.xkcd_rgb["teal green"],
          linewidth=2.5)
 plt.xlabel('Frontal ablation [$km³.yr^{-1}$]')
@@ -160,10 +160,10 @@ at = AnchoredText('b', prop=dict(size=20), frameon=True, loc=2)
 f2_ax2.add_artist(at)
 
 f2_ax3 = fig2.add_subplot(gs[2])
-plt.plot(dg['Water depth [m]'], dg['OGGM - Calving law'],
+plt.plot(dg['Water depth [m]'], dg['Calving law - OGGM'],
          sns.xkcd_rgb["burnt orange"],
          linewidth=2.5)
-plt.plot(dg['Water depth [m]'], dg['OGGM (with sliding) - Calving law'],
+plt.plot(dg['Water depth [m]'], dg['Calving law - OGGM (with sliding)'],
          sns.xkcd_rgb["teal green"],
          linewidth=2.5)
 

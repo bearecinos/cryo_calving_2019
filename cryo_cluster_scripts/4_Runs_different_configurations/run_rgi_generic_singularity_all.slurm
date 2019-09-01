@@ -2,6 +2,7 @@
 #
 #SBATCH --job-name=config_runs
 #SBATCH --ntasks=1
+#SBATCH --partition=high
 #SBATCH --cpus-per-task=14
 #SBATCH --time=24:00:00
 #SBATCH --mail-user=recinos@uni-bremen.de
