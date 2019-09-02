@@ -102,13 +102,13 @@ for f in full_exp_name[0:13]:
     volume, tails, basedir = read_experiment_file(f)
     volume_no_calving += [np.around(volume,2)]
     exp_name += [basedir]
-print('Experiment name', exp_number)
-print('Volume before calving', volume_no_calving)
+#print('Experiment name', exp_number)
+#print('Volume before calving', volume_no_calving)
 
 volume_no_calving_sle = []
 for value in volume_no_calving:
     volume_no_calving_sle.append(calculate_sea_level_equivalent(value))
-print('Volume before calving SLE', volume_no_calving_sle)
+#print('Volume before calving SLE', volume_no_calving_sle)
 
 # Extract volumes for calving experiments
 # Reading calving experiments contained in 4_2_With_calving_exp_onlyMT
@@ -122,14 +122,14 @@ for f in full_exp_name[13:len(full_exp_name)]:
     volume, tails, basedir= read_experiment_file(f)
     volume_calving += [np.around(volume,2)]
     exp_name_c += [basedir]
-print('Experiment name', exp_number_c)
-print('Volume after calving', volume_calving)
+#print('Experiment name', exp_number_c)
+#print('Volume after calving', volume_calving)
 
 
 volume_calving_sle = []
 for value in volume_calving:
     volume_calving_sle.append(calculate_sea_level_equivalent(value))
-print('Volume after calving SLE', volume_calving_sle)
+#print('Volume after calving SLE', volume_calving_sle)
 
 # Extract volumes from volume_below_sea_level.csv
 # for the different configurations
@@ -157,9 +157,9 @@ for f in full_dir_name:
     vbsl_c += [np.around(volume_c,2)]
     exp_name_bsl += [tails]
 
-print('Experiment', exp_number)
-print('Volume bsl no calving', vbsl)
-print('Volume bsl calving', vbsl_c)
+# print('Experiment', exp_number)
+# print('Volume bsl no calving', vbsl)
+# print('Volume bsl calving', vbsl_c)
 
 # sea level equivalent
 vbsl_sle = []
@@ -169,14 +169,14 @@ for i, j in zip(vbsl, vbsl_c):
     vbsl_sle.append(calculate_sea_level_equivalent(i))
     vbsl_c_sle.append(calculate_sea_level_equivalent(j))
 
-print('Volume bsl no calving in s.l.e', vbsl_sle)
-print('Volume bsl calving in s.l.e', vbsl_c_sle)
+#print('Volume bsl no calving in s.l.e', vbsl_sle)
+#print('Volume bsl calving in s.l.e', vbsl_c_sle)
 
 percentage = []
 for i, j in zip(volume_no_calving, volume_calving):
     percentage.append(calculate_volume_percentage(i,j))
 
-print('Percentage', percentage)
+print('Percentage', min(percentage), max(percentage))
 
 print('Percent for columbia', calculate_volume_percentage(270.40, 349.39))
 print('Gt equivalent columbia', 2.98161468959857/1.091)
@@ -193,14 +193,14 @@ d = {'Experiment No': exp_number,
      'Volume with calving in km3': volume_calving,
      'Volume with calving bsl km3': vbsl_c,
      'Volume differences in km3':
-         [np.abs(a - b) for a, b in zip(volume_no_calving,volume_calving)],
+         [np.abs(a - b) for a, b in zip(volume_no_calving,volume_calving)]
      }
 
 ds = pd.DataFrame(data=d)
 
 ds = ds.sort_values(by=['Experiment No'])
-#ds.to_csv(os.path.join(plot_path,
-#                       'MT_glaciers_volume_per_exp.csv'))
+ds.to_csv(os.path.join(plot_path,
+                       'MT_glaciers_volume_per_exp.csv'))
 print('----------- For de paper ------------------')
 print('Mean and std volume with calving',
       np.round(np.mean(volume_calving_sle),2), np.round(np.std(volume_calving_sle),2))
@@ -216,7 +216,13 @@ print('TABLE',ds)
 
 print('is vbsl bigger than differnces', vbsl_c > ds['Volume differences in km3'].values)
 
+diff_config = np.diff(volume_calving)
 
+total = abs(diff_config / volume_calving[0:-1])*100
+
+print('volume after calving differences between configs', total)
+
+exit()
 # Plot settings
 # Set figure width and height in cm
 width_cm = 12
