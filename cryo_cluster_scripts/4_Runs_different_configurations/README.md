@@ -5,14 +5,22 @@ configurations.
 
 | Configuration  | Description                                                                 |
 | -------------: | :--------------------------------------------------------------------------:|
-| 1              |  k<sub>1</sub> = 0.63208, Glen A = OGGM default, f<sub>s</sub> = 0.0         |
-| 2              |  k<sub>2</sub> = 0.6659, Glen A = OGGM default, f<sub>s</sub> = 0.0          |
-| 3              |  k<sub>1</sub> = 0.63208, Glen A = OGGM default, f<sub>s</sub> = OGGM default|
-| 4              |  k<sub>2</sub> = 0.6659, Glen A = OGGM default, f<sub>s</sub> = OGGM default |
+| 1              |  k<sub>1</sub> = 0.63208, Glen A = OGGM default, f<sub>s</sub> = 0.0          |
+| 2              |  k<sub>2</sub> = 0.6659, Glen A = OGGM default, f<sub>s</sub> = 0.0           |
+| 3              |  k<sub>1</sub> = 0.63208, Glen A = OGGM default, f<sub>s</sub> = OGGM default |
+| 4              |  k<sub>2</sub> = 0.6659, Glen A = OGGM default, f<sub>s</sub> = OGGM default  |
 | 5              |  k<sub>1</sub> = 0.63208, Glen A = 2.40570e-24, f<sub>s</sub> = 0.0           |
 | 6              |  k<sub>2</sub> = 0.6659, Glen A = 2.70310e-24, f<sub>s</sub> = 0.0            |
-| 7              |  k<sub>1</sub> = 0.63208, Glen A = 2.11487e-24, f<sub>s</sub> = OGGM default |
+| 7              |  k<sub>1</sub> = 0.63208, Glen A = 2.11487e-24, f<sub>s</sub> = OGGM default  |
 | 8              |  k<sub>2</sub> = 0.6659, Glen A = 2.40186e-24, f<sub>s</sub> = OGGM default   |
+| 9              |  k<sub>2</sub> = 0.50369, Glen A = OGGM default, f<sub>s</sub> = 0.0          |
+| 10              |  k<sub>2</sub> = 0.81968, Glen A = OGGM default, f<sub>s</sub> = OGGM default  |
+| 11              |  k<sub>2</sub> = 0.6659, Glen A = 4.67103e-24, f<sub>s</sub> = 0.0            |
+| 12              |  k<sub>2</sub> = 0.63208, Glen A = 1.29543e-24, f<sub>s</sub> = OGGM default   |
+| 13              |  k<sub>2</sub> = 0.6659, Glen A = OGGM default, f<sub>s</sub> = 2.59852e-19   |
+
+
+
 
 The content of each experiment (each folder) is the following:
 
