@@ -11,6 +11,13 @@ from mpl_toolkits.axes_grid1 import ImageGrid
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib.offsetbox import AnchoredText
 
+def get_slope(calving_values, volume_values):
+
+    see = np.diff(percent)
+    indexes = [i for i, e in enumerate(see) if e != 0]
+    m, b = np.polyfit(calving_values, volume_values, 1)
+    return m
+
 def percentage(list):
     percent = list / list[0]
     return percent
@@ -66,6 +73,8 @@ for j, f in enumerate(filenames):
 
     if volume[0] > 500:
         percent = volume / volume[0]
+        see = np.diff(percent)
+        indexes = [i for i, e in enumerate(see) if e != 0]
         plt.plot(calving/prcp, percent, sns.xkcd_rgb["burnt orange"],
                  label=my_labels["x1"], linewidth=2.5)
     if 500 > volume[0] > 100:
@@ -110,6 +119,9 @@ for i, f in enumerate(filenames):
     prcp = climate['precp'][i]
 
     if volume[0] > 500:
+        percent = volume / volume[0]
+        see = np.diff(percent)
+        indexes = [i for i, e in enumerate(see) if e != 0]
         plt.plot(calving/prcp, mu_star, sns.xkcd_rgb["burnt orange"],
                  label=my_labels["x1"], linewidth=2.5)
     if 500 > volume[0] > 100:
@@ -142,7 +154,41 @@ handles, labels = plt.gca().get_legend_handles_labels()
 by_label = OrderedDict(zip(labels, handles))
 plt.legend(by_label.values(), by_label.keys(), loc='upper right')
 
-#plt.show()
-plt.savefig(os.path.join(plot_path,'calving_volume_mu_draft.pdf'),
-                               dpi=150, bbox_inches='tight')
+plt.show()
+#plt.savefig(os.path.join(plot_path,'calving_volume_mu_draft.pdf'),
+#                               dpi=150, bbox_inches='tight')
 
+initial_volume = []
+slopes = []
+
+for j, f in enumerate(filenames):
+
+
+    #Get each glacier file and variables
+    glacier = pd.read_csv(f)
+    calving = glacier['calving_flux']
+    volume = glacier['volume']
+
+    #Get climate variable
+    prcp = climate['precp'][j]
+
+    calving_values = calving/prcp
+    percent = volume / volume[0]
+
+    see = np.diff(percent)
+    indexes = [i for i, e in enumerate(see) if e != 0]
+
+    if len(indexes)<2:
+        pass
+    else:
+        slope = get_slope(calving_values[indexes], percent[indexes])
+
+        initial_volume = np.append(initial_volume, volume[0])
+        slopes = np.append(slopes, slope)
+
+
+fig4 = plt.figure(1, figsize=(width_cm, height_cm))
+plt.scatter(initial_volume, slopes)
+plt.xlabel('Volume', size=20)
+plt.ylabel('Sensitivity to calving', size=20)
+plt.show()

@@ -222,7 +222,12 @@ total = abs(diff_config / volume_calving[0:-1])*100
 
 print('volume after calving differences between configs', total)
 
-exit()
+farinotti_data = pd.read_csv(os.path.join(MAIN_PATH,
+                              'input_data/farinotti_volume.csv'))
+
+#print(farinotti_data)
+
+
 # Plot settings
 # Set figure width and height in cm
 width_cm = 12
@@ -240,17 +245,29 @@ rcParams['xtick.labelsize'] = 20
 rcParams['ytick.labelsize'] = 20
 rcParams['legend.fontsize'] = 14
 
-N = len(ds)
+N = len(ds)+1
 ind = np.arange(N)
 graph_width = 0.35
-labels = ds['Experiment No'].values
+labels = np.append(ds['Experiment No'].values, 14)
+print(labels)
 
-bars1 = ds['Volume no calving bsl km3'].values
-bars2 = ds['Volume no calving in km3'].values
+vol_fari = farinotti_data['vol_itmix_m3'].sum()*1e-9
+vol_bsl_fari = farinotti_data['vol_bsl_itmix_m3'].sum()*1e-9
+
+
+
+bars1 = np.append(ds['Volume no calving bsl km3'].values, vol_bsl_fari)
+bars2 = np.append(ds['Volume no calving in km3'].values, vol_fari)
 #print(bars2)
 
 bars3 = ds['Volume with calving bsl km3'].values
 bars4 = ds['Volume with calving in km3'].values
+
+
+
+
+
+print(bars1)
 
 sns.set_color_codes()
 sns.set_color_codes("colorblind")
@@ -284,10 +301,19 @@ p4_extra = ax1.barh(ind[8:13] - graph_width, bars4[8:13], color=sns.xkcd_rgb["te
               edgecolor="white", alpha=0.7,
               height=graph_width)
 
+fari_low = ax1.barh(ind[-1]-graph_width,  bars1[13:14]*-1, color="indianred",
+                edgecolor="white", alpha=0.7,
+                height=graph_width)
+
+fari = ax1.barh(ind[-1]-graph_width,  bars2[13:14], color=sns.xkcd_rgb["grey"],
+                edgecolor="white", height=graph_width)
 
 
 ax1.set_xticks([-1000, 0, 1000, 2000, 3000, 4000, 5000])
 ax1.set_xticklabels(abs(ax1.get_xticks()), fontsize=20)
+
+#ax1.plot(bars5, 13)
+
 ax2.set_xlim(ax1.get_xlim())
 #ax2.tick_params('Volume [mm SLE]', fontsize=20)
 ax2.set_xticks(ax1.get_xticks())
@@ -304,17 +330,18 @@ ax2.set_xlabel('Volume [mm SLE]', fontsize=18)
 
 plt.yticks(ind - graph_width/2, labels)
 
-ax1.set_yticklabels(labels, fontsize=20)
+ax1.set_yticklabels(labels[0:-1], fontsize=20)
 ax1.set_ylabel('Model configurations', fontsize=18)
 ax1.set_xlabel('Volume [km³]',fontsize=18)
-plt.legend((p2[0], p4[0], p1[0]),
+plt.legend((p2[0], p4[0], p1[0], fari[0]),
            ('Volume without frontal ablation',
             'Volume with frontal ablation',
-            'Volume below sea level'),
+            'Volume below sea level',
+            'Farinotti et al. (2019)'),
             frameon=True,
             bbox_to_anchor=(1.1, -0.15), ncol=3, fontsize=15)
 plt.margins(0.05)
 
 #plt.show()
-plt.savefig(os.path.join(plot_path, 'marine_volume.pdf'),
+plt.savefig(os.path.join(plot_path, 'marine_volume_draft.pdf'),
             dpi=150, bbox_inches='tight')
