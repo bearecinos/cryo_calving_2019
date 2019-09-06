@@ -229,12 +229,12 @@ plt.plot(k2, obs[0], 'x', markersize=12,
          color=sns.xkcd_rgb["teal green"], linewidth=4,
          label='k2 = '+ str(round(k2, 2)))
 
-# plt.plot(k1_low, lw_bound[0], 'x', markersize=12,
-#          color=sns.xkcd_rgb["black"], linewidth=5)
-         #label='k1 = '+ str(round(k1, 2)))
+plt.plot(k1_low, lw_bound[0], 'x', markersize=12,
+         color=sns.xkcd_rgb["black"], linewidth=5)
+       # label='k1 = '+ str(round(k1, 2))
 
-# plt.plot(k2_up, up_bound[0], 'x', markersize=12,
-#          color=sns.xkcd_rgb["black"], linewidth=5)
+plt.plot(k2_up, up_bound[0], 'x', markersize=12,
+         color=sns.xkcd_rgb["black"], linewidth=5)
 
 plt.plot(k, b3 + m3*k, '--', color='black', linewidth=3.0,
         label='Frontal ablation (McNabb et al., 2015)')
@@ -269,23 +269,23 @@ plt.plot(glen_a, data_frame3_A,
              label=my_labels_glena["x3"], linewidth=2.5)
 
 
-# plt.plot(glen_0, obs[0], 'x',
-#          markersize=20, linewidth=4, color=sns.xkcd_rgb["ocean blue"])
-#
-# plt.plot(glen_1, obs[0], 'x',
-#          markersize=20, linewidth=4, color=sns.xkcd_rgb["orange"])
-#
-# plt.plot(glen_2, obs[0], 'x',
-#          markersize=20, linewidth=4, color=sns.xkcd_rgb["green"])
-#
-# plt.plot(glen_3, obs[0], 'x',
-#          markersize=20, linewidth=4, color=sns.xkcd_rgb["red"])
-#
-# plt.plot(glena_low, lw_bound[0], 'x',
-#          markersize=20, linewidth=5, color=sns.xkcd_rgb["black"])
-#
-# plt.plot(glena_up, up_bound[0], 'x',
-#          markersize=20, linewidth=5, color=sns.xkcd_rgb["black"])
+plt.plot(glen_0, obs[0], 'x',
+         markersize=20, linewidth=4, color=sns.xkcd_rgb["ocean blue"])
+
+plt.plot(glen_1, obs[0], 'x',
+         markersize=20, linewidth=4, color=sns.xkcd_rgb["orange"])
+
+plt.plot(glen_2, obs[0], 'x',
+         markersize=20, linewidth=4, color=sns.xkcd_rgb["green"])
+
+plt.plot(glen_3, obs[0], 'x',
+         markersize=20, linewidth=4, color=sns.xkcd_rgb["red"])
+
+plt.plot(glena_low, lw_bound[0], 'x',
+         markersize=20, linewidth=5, color=sns.xkcd_rgb["black"])
+
+plt.plot(glena_up, up_bound[0], 'x',
+         markersize=20, linewidth=5, color=sns.xkcd_rgb["black"])
 
 plt.plot(glen_a, np.repeat(15.11*1.091, len(glen_a)), '--', color='black',
              label='Frontal ablation (McNabb et al., 2015)', linewidth=3.0)
@@ -320,8 +320,8 @@ plt.plot(fs[:-2], data_frame2_fs[:-2],
 plt.plot(fs[:-2], np.repeat(15.11 * 1.091, len(fs[:-2])), '--', color='black',
          label='Frontal ablation (McNabb et al., 2015)', linewidth=3.0)
 #
-# plt.plot(fs_low, lw_bound[0], 'x',
-#          markersize=20, linewidth=5, color=sns.xkcd_rgb["black"])
+plt.plot(fs_low, lw_bound[0], 'x',
+         markersize=20, linewidth=5, color=sns.xkcd_rgb["black"])
 
 plt.fill_between(fs[:-2],np.repeat(15.11*1.091-3.96, len(fs[:-2])),
                  np.repeat(15.11*1.091+3.96, len(fs[:-2])),

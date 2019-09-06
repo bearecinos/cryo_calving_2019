@@ -76,22 +76,6 @@ for glac_dir in full_dir_name:
             thick_c = cc['thick']
             vol_c = cc['volume']
 
-            ## TODO: delete this part because now I dont have the flowline shortage
-            ## problem
-            # if len(surface) != len(thick):
-            #     plt.figure()
-            #     plt.plot(surface, color='r')
-            #     plt.plot(thick, color='grey')
-            #     plt.title(
-            #         'Glacier ' + gdir.rgi_id + ' flowline No.' + np.str(f) +
-            #         ' out of ' + np.str(len(fls)))
-            #     plt.savefig(os.path.join(cfg.PATHS['working_dir'],
-            #                              gdir.rgi_id + '_' + np.str(
-            #                                  f) + '.png'))
-            #     # Warning('({}) something went wrong with the '
-            #     #               'inversion'.format(gdir.rgi_id))
-            #     pass
-            # else:
             bed = surface - thick
             bed_c = surface - thick_c
 

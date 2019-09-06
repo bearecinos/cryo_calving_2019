@@ -96,40 +96,29 @@ volume_no_calving = []
 exp_name = []
 exp_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 
-#print(full_exp_name[0:13])
-
 for f in full_exp_name[0:13]:
     volume, tails, basedir = read_experiment_file(f)
     volume_no_calving += [np.around(volume,2)]
     exp_name += [basedir]
-#print('Experiment name', exp_number)
-#print('Volume before calving', volume_no_calving)
 
 volume_no_calving_sle = []
 for value in volume_no_calving:
     volume_no_calving_sle.append(calculate_sea_level_equivalent(value))
-#print('Volume before calving SLE', volume_no_calving_sle)
 
 # Extract volumes for calving experiments
 # Reading calving experiments contained in 4_2_With_calving_exp_onlyMT
-#print(full_exp_name[8:len(full_exp_name)])
 volume_calving = []
 exp_name_c = []
 exp_number_c = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-
 
 for f in full_exp_name[13:len(full_exp_name)]:
     volume, tails, basedir= read_experiment_file(f)
     volume_calving += [np.around(volume,2)]
     exp_name_c += [basedir]
-#print('Experiment name', exp_number_c)
-#print('Volume after calving', volume_calving)
-
 
 volume_calving_sle = []
 for value in volume_calving:
     volume_calving_sle.append(calculate_sea_level_equivalent(value))
-#print('Volume after calving SLE', volume_calving_sle)
 
 # Extract volumes from volume_below_sea_level.csv
 # for the different configurations
@@ -144,7 +133,6 @@ for d in dir_name:
                              d +'/volume_below_sea_level.csv'))
 
 full_dir_name = sorted(full_dir_name)
-#print(full_dir_name)
 
 # Reading no calving volumes below sea level
 vbsl = []
@@ -157,10 +145,6 @@ for f in full_dir_name:
     vbsl_c += [np.around(volume_c,2)]
     exp_name_bsl += [tails]
 
-# print('Experiment', exp_number)
-# print('Volume bsl no calving', vbsl)
-# print('Volume bsl calving', vbsl_c)
-
 # sea level equivalent
 vbsl_sle = []
 vbsl_c_sle = []
@@ -169,18 +153,18 @@ for i, j in zip(vbsl, vbsl_c):
     vbsl_sle.append(calculate_sea_level_equivalent(i))
     vbsl_c_sle.append(calculate_sea_level_equivalent(j))
 
-#print('Volume bsl no calving in s.l.e', vbsl_sle)
-#print('Volume bsl calving in s.l.e', vbsl_c_sle)
 
 percentage = []
 for i, j in zip(volume_no_calving, volume_calving):
     percentage.append(calculate_volume_percentage(i,j))
 
+print('FOR THE PAPER')
+print('----------------')
 print('Percentage', min(percentage), max(percentage))
-
 print('Percent for columbia', calculate_volume_percentage(270.40, 349.39))
 print('Gt equivalent columbia', 2.98161468959857/1.091)
 
+# Make a dataframe with each configuration output
 d = {'Experiment No': exp_number,
      'Volume no calving in s.l.e': volume_no_calving_sle,
      'Volume no calving bsl in s.l.e': vbsl_sle,
@@ -195,40 +179,56 @@ d = {'Experiment No': exp_number,
      'Volume differences in km3':
          [np.abs(a - b) for a, b in zip(volume_no_calving,volume_calving)]
      }
-
 ds = pd.DataFrame(data=d)
 
 ds = ds.sort_values(by=['Experiment No'])
 ds.to_csv(os.path.join(plot_path,
                        'MT_glaciers_volume_per_exp.csv'))
-print('----------- For de paper ------------------')
-print('Mean and std volume with calving',
-      np.round(np.mean(volume_calving_sle),2), np.round(np.std(volume_calving_sle),2))
-print('Mean and std volume no calving',
-      np.round(np.mean(volume_no_calving_sle),2), np.round(np.std(volume_no_calving_sle),2))
+
+print('----------- For de paper more information ------------------')
+
+print('Mean and std volume with calving for all config',
+      np.round(np.mean(volume_calving_sle),2),
+      np.round(np.std(volume_calving_sle),2))
+
+print('Mean and std volume no calving for all config',
+      np.round(np.mean(volume_no_calving_sle),2),
+      np.round(np.std(volume_no_calving_sle),2))
+
 print('Mean and std volume below sea level with calving',
-      np.round(np.mean(vbsl_c_sle),2), np.round(np.std(vbsl_c_sle),2))
+      np.round(np.mean(vbsl_c_sle),2),
+      np.round(np.std(vbsl_c_sle),2))
 
 print('Mean and std volume below sea level without calving',
-      np.round(np.mean(vbsl_sle),2), np.round(np.std(vbsl_sle),2))
+      np.round(np.mean(vbsl_sle),2),
+      np.round(np.std(vbsl_sle),2))
 
 print('TABLE',ds)
 
-print('is vbsl bigger than differnces', vbsl_c > ds['Volume differences in km3'].values)
+print('For the paper check if the volume below sea level is bigger than diff among config.')
+print(vbsl_c > ds['Volume differences in km3'].values)
 
 diff_config = np.diff(volume_calving)
-
 total = abs(diff_config / volume_calving[0:-1])*100
 
 print('volume after calving differences between configs', total)
 
+
+# Reading Farinotti 2019 regional volume for MT glaciers.
 farinotti_data = pd.read_csv(os.path.join(MAIN_PATH,
                               'input_data/farinotti_volume.csv'))
+#Sum the volumes in farinotti data
+vol_fari = farinotti_data['vol_itmix_m3'].sum()*1e-9
+vol_bsl_fari = farinotti_data['vol_bsl_itmix_m3'].sum()*1e-9
 
-#print(farinotti_data)
 
+print('FOR THE PAPER')
+print('our estimate after calving', np.round(np.mean(volume_calving_sle),2))
+print('farinotti', calculate_sea_level_equivalent(vol_fari))
+print('percentage of vol change',
+      calculate_volume_percentage(np.mean(volume_calving),vol_fari))
 
-# Plot settings
+# Plot everything!
 # Set figure width and height in cm
 width_cm = 12
 height_cm = 8
@@ -249,25 +249,12 @@ N = len(ds)+1
 ind = np.arange(N)
 graph_width = 0.35
 labels = np.append(ds['Experiment No'].values, 14)
-print(labels)
-
-vol_fari = farinotti_data['vol_itmix_m3'].sum()*1e-9
-vol_bsl_fari = farinotti_data['vol_bsl_itmix_m3'].sum()*1e-9
-
-
 
 bars1 = np.append(ds['Volume no calving bsl km3'].values, vol_bsl_fari)
 bars2 = np.append(ds['Volume no calving in km3'].values, vol_fari)
-#print(bars2)
 
 bars3 = ds['Volume with calving bsl km3'].values
 bars4 = ds['Volume with calving in km3'].values
-
-
-
-
-
-print(bars1)
 
 sns.set_color_codes()
 sns.set_color_codes("colorblind")
@@ -277,20 +264,20 @@ p1 = ax1.barh(ind[0:8], bars1[0:8]*-1,
 
 p1_extra = ax1.barh(ind[8:13], bars1[8:13]*-1,
               color="indianred", edgecolor="white", height=graph_width,
-                    alpha=0.7)
+                    alpha=0.5)
 
 p2 = ax1.barh(ind[0:8], bars2[0:8], color=sns.xkcd_rgb["ocean blue"],
               height=graph_width, edgecolor="white")
 
 p2_extra = ax1.barh(ind[8:13], bars2[8:13], color=sns.xkcd_rgb["ocean blue"],
                     height=graph_width, edgecolor="white",
-                    alpha=0.7)
+                    alpha=0.5)
 
 p3 = ax1.barh(ind[0:8] - graph_width, bars3[0:8]*-1,
               color="indianred",edgecolor="white", height=graph_width)
 
 p3_extra = ax1.barh(ind[8:13] - graph_width, bars3[8:13]*-1,
-              color="indianred", edgecolor="white", alpha=0.7,
+              color="indianred", edgecolor="white", alpha=0.5,
                     height=graph_width)
 
 p4 = ax1.barh(ind[0:8] - graph_width, bars4[0:8], color=sns.xkcd_rgb["teal green"],
@@ -298,32 +285,27 @@ p4 = ax1.barh(ind[0:8] - graph_width, bars4[0:8], color=sns.xkcd_rgb["teal green
               height=graph_width)
 
 p4_extra = ax1.barh(ind[8:13] - graph_width, bars4[8:13], color=sns.xkcd_rgb["teal green"],
-              edgecolor="white", alpha=0.7,
+              edgecolor="white", alpha=0.5,
               height=graph_width)
 
 fari_low = ax1.barh(ind[-1]-graph_width,  bars1[13:14]*-1, color="indianred",
-                edgecolor="white", alpha=0.7,
+                edgecolor="white",
                 height=graph_width)
 
 fari = ax1.barh(ind[-1]-graph_width,  bars2[13:14], color=sns.xkcd_rgb["grey"],
                 edgecolor="white", height=graph_width)
 
-
 ax1.set_xticks([-1000, 0, 1000, 2000, 3000, 4000, 5000])
 ax1.set_xticklabels(abs(ax1.get_xticks()), fontsize=20)
 
-#ax1.plot(bars5, 13)
-
 ax2.set_xlim(ax1.get_xlim())
-#ax2.tick_params('Volume [mm SLE]', fontsize=20)
 ax2.set_xticks(ax1.get_xticks())
 array = ax1.get_xticks()
-#print(array)
 
+# Get the other axis on sea level equivalent
 sle = []
 for value in array:
     sle.append(np.round(abs(calculate_sea_level_equivalent(value)),2))
-#print(sle)
 
 ax2.set_xticklabels(sle,fontsize=20)
 ax2.set_xlabel('Volume [mm SLE]', fontsize=18)

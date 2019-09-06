@@ -143,7 +143,7 @@ for i, f in enumerate(filenames):
     #             label=my_labels["x4"],  linewidth=2.0)
     else:
         pass
-    plt.xlabel('Frontal ablation fraction', size=20)
+    plt.xlabel('Frontal ablation (normalised)', size=20)
     plt.ylabel('Temperature sensitivity \n $\mu^{*}$ [mm $yr^{-1}K^{-1}$]', size=20)
     at = AnchoredText('b', prop=dict(size=20), frameon=True, loc=2)
     ax2.add_artist(at)
@@ -154,10 +154,12 @@ handles, labels = plt.gca().get_legend_handles_labels()
 by_label = OrderedDict(zip(labels, handles))
 plt.legend(by_label.values(), by_label.keys(), loc='upper right')
 
-plt.show()
-#plt.savefig(os.path.join(plot_path,'calving_volume_mu_draft.pdf'),
-#                               dpi=150, bbox_inches='tight')
+#plt.show()
+plt.savefig(os.path.join(plot_path, 'calving_volume_mu_draft.pdf'),
+            dpi=150, bbox_inches='tight')
 
+
+exit()
 initial_volume = []
 slopes = []
 
