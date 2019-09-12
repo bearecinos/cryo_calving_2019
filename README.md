@@ -75,6 +75,7 @@ OGGM libraries such as:
 `cartopy.mpl.gridliner` , `cartopy.feature`, 
 `cartopy.io.shapereader` and `cartopy.crs`   
  
+[![DOI](https://zenodo.org/badge/174557330.svg)](https://zenodo.org/badge/latestdoi/174557330)
  
 
 
